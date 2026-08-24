@@ -1,13 +1,18 @@
+import { useTheme } from "../context/ThemeContext";
+
 export function NexusLogoIcon({
-  size = 36,
+  size = 34,
   className = "",
 }: {
   size?: number;
   className?: string;
 }) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <img
-      src="/logo-icon.jpg"
+      src={isDark ? "/logo-icon-dark.png" : "/logo-icon-light.png"}
       alt="NexusOdonto Icon"
       width={size}
       height={size}
@@ -16,9 +21,9 @@ export function NexusLogoIcon({
         width: `${size}px`,
         height: `${size}px`,
         objectFit: "contain",
-        borderRadius: "8px",
-        mixBlendMode: "multiply",
         flexShrink: 0,
+        filter: isDark ? "brightness(1.8) contrast(1.2)" : "none",
+        transition: "filter 0.2s ease",
       }}
     />
   );
@@ -30,12 +35,12 @@ export function NexusLogo({ showText = true }: { showText?: boolean }) {
       className="nexus-logo-wrapper"
       style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}
     >
-      <NexusLogoIcon size={38} />
+      <NexusLogoIcon size={34} />
       {showText && (
         <span
           className="nexus-logo-text"
           style={{
-            fontSize: "20px",
+            fontSize: "18px",
             fontWeight: 800,
             color: "var(--color-text)",
             letterSpacing: "-0.03em",
@@ -43,7 +48,10 @@ export function NexusLogo({ showText = true }: { showText?: boolean }) {
             lineHeight: 1,
           }}
         >
-          Nexus<span style={{ color: "var(--color-primary-light)", fontWeight: 800 }}>Odonto</span>
+          Nexus
+          <span style={{ color: "var(--color-primary-light)", fontWeight: 800 }}>
+            Odonto
+          </span>
         </span>
       )}
     </div>

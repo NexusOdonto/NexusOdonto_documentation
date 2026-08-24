@@ -112,7 +112,10 @@ export function ArticlePage() {
                 const { children, className, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 const isInline = !match && !className?.includes("hljs");
-                const codeString = String(children).replace(/\n$/, "");
+
+                // Extrae el texto plano sin importar si rehypeHighlight convirtió children en objetos
+                const rawCodeText = getTextFromChildren(children);
+                const codeString = rawCodeText.replace(/\n$/, "");
 
                 if (isInline) {
                   return (
@@ -145,7 +148,7 @@ export function ArticlePage() {
                         onClick={() => copyCodeText(codeString, blockIdx)}
                       >
                         <CopyIcon className="copy-icon" />
-                        <span>{isCopied ? "Copiado!" : "Copy"}</span>
+                        <span>{isCopied ? "¡Copiado!" : "Copy"}</span>
                       </button>
                     </div>
 

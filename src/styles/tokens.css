@@ -1,21 +1,21 @@
 :root {
-  /* Brand Palette from NexusOdonto Clinical System Design */
-  --color-primary: #1E40AF;
-  --color-primary-hover: #1D4ED8;
-  --color-primary-dark: #1E3A8A;
-  --color-primary-light: #3B82F6;
-  --color-primary-tint: #EFF6FF;
+  /* Brand Palette from NexusOdonto (Celeste Logo & Tech Mint) */
+  --color-primary: #00A8CC;          /* Celeste Cian principal */
+  --color-primary-hover: #008B9B;    /* Celeste oscuro para hover */
+  --color-primary-dark: #1A3644;     /* Azul Noche para contraste profundo */
+  --color-primary-light: #38BDF8;    /* Celeste claro interactivo */
+  --color-primary-tint: #E6F7FA;     /* Celeste suave para fondos activos */
 
   --color-secondary: #E0F2FE;
   --color-secondary-dark: #BAE6FD;
-  --color-secondary-text: #0369A1;
+  --color-secondary-text: #0284C7;
 
-  --color-tertiary: #10B981;
-  --color-tertiary-hover: #059669;
-  --color-tertiary-light: #D1FAE5;
-  --color-tertiary-tint: #ECFDF5;
+  --color-tertiary: #66D2B1;         /* Verde Menta del logo (IA y Éxito) */
+  --color-tertiary-hover: #4EC29E;
+  --color-tertiary-light: #D1F4E8;
+  --color-tertiary-tint: #EDFAFA;
 
-  --color-neutral-dark: #0F172A;
+  --color-neutral-dark: #1A3644;     /* Azul Noche del logo para textos */
   --color-neutral-muted: #64748B;
   --color-neutral-light: #F8FAFC;
 
@@ -31,43 +31,45 @@
   --toc-width: 230px;
   --topbar-height: 64px;
 
-  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 2px 0 rgba(26, 54, 68, 0.05);
+  --shadow: 0 4px 6px -1px rgba(26, 54, 68, 0.06), 0 2px 4px -2px rgba(26, 54, 68, 0.04);
+  --shadow-lg: 0 10px 25px -3px rgba(26, 54, 68, 0.08), 0 4px 6px -4px rgba(26, 54, 68, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(26, 54, 68, 0.1), 0 8px 10px -6px rgba(26, 54, 68, 0.04);
 }
 
 /* Light Theme (Default & Explicit) */
 :root,
 [data-theme="light"] {
-  --color-bg: #F8FAFC;
-  --color-bg-sidebar: #FFFFFF;
-  --color-bg-elevated: #FFFFFF;
-  --color-bg-subtle: #F1F5F9;
+  --bg-overlay: rgba(248, 250, 252, 0.88); /* Tono claro transparente */
+  --color-bg: rgba(248, 250, 252, 0.8);
+  --color-bg-sidebar: rgba(255, 255, 255, 0.75); /* Permite ver el fondo sutilmente */
+  --color-bg-elevated: rgba(255, 255, 255, 0.85);
+  --color-bg-subtle: rgba(241, 245, 249, 0.8);
   --color-border: #E2E8F0;
   --color-border-subtle: #F1F5F9;
-  --color-text: #0F172A;
-  --color-text-muted: #64748B;
+  --color-text: #1A3644;             /* Texto principal en Azul Noche */
+  --color-text-muted: #475569;
   --color-text-subtle: #94A3B8;
-  --color-card-bg: #FFFFFF;
+  --color-card-bg: rgba(255, 255, 255, 0.85);
   --color-card-border: #E2E8F0;
-  --color-callout-bg: #F0Fdf4;
-  --color-callout-border: #10B981;
+  --color-callout-bg: rgba(230, 247, 250, 0.85);
+  --color-callout-border: #00A8CC;
 }
 
 /* Dark Theme */
 [data-theme="dark"] {
-  --color-bg: #0F172A;
-  --color-bg-sidebar: #1E293B;
-  --color-bg-elevated: #1E293B;
-  --color-bg-subtle: #334155;
+  --bg-overlay: rgba(15, 23, 42, 0.85); /* Tono oscuro transparente */
+  --color-bg: rgba(15, 23, 42, 0.8);
+  --color-bg-sidebar: rgba(30, 41, 59, 0.75);
+  --color-bg-elevated: rgba(30, 41, 59, 0.85);
+  --color-bg-subtle: rgba(51, 65, 85, 0.8);
   --color-border: #334155;
   --color-border-subtle: #1E293B;
   --color-text: #F8FAFC;
   --color-text-muted: #94A3B8;
   --color-text-subtle: #64748B;
-  --color-card-bg: #1E293B;
+  --color-card-bg: rgba(30, 41, 59, 0.85);
   --color-card-border: #334155;
-  --color-callout-bg: #064E3B;
-  --color-callout-border: #10B981;
+  --color-callout-bg: rgba(12, 41, 56, 0.85);
+  --color-callout-border: #00A8CC;
 }

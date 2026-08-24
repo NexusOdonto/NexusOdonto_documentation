@@ -2,10 +2,15 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { SearchModal } from "./SearchModal";
 import { useTheme } from "../context/ThemeContext";
-import { SearchIcon, SunIcon, MoonIcon, UserAvatarIcon } from "./Icons";
+import { SearchIcon, SunIcon, MoonIcon, MenuIcon } from "./Icons";
 import { NexusLogo } from "./NexusLogo";
 
-export function TopBar() {
+interface TopBarProps {
+  onMenuClick?: () => void;
+  showMenuButton?: boolean;
+}
+
+export function TopBar({ onMenuClick, showMenuButton = false }: TopBarProps) {
   const [searchOpen, setSearchOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
@@ -23,6 +28,16 @@ export function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar-left">
+        {showMenuButton && (
+          <button
+            className="topbar-action-btn"
+            onClick={onMenuClick}
+            title="Abrir menú"
+            style={{ marginRight: '8px' }}
+          >
+            <MenuIcon />
+          </button>
+        )}
         <Link to="/" className="topbar-logo-link" style={{ textDecoration: "none" }}>
           <NexusLogo />
           <span className="topbar-logo-badge">Docs</span>
@@ -33,7 +48,6 @@ export function TopBar() {
         <button className="topbar-search-btn" onClick={() => setSearchOpen(true)}>
           <SearchIcon className="topbar-search-icon" />
           <span>Search documentation...</span>
-          <span className="topbar-search-shortcut">⌘K</span>
         </button>
       </div>
 
@@ -46,9 +60,6 @@ export function TopBar() {
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
         </button>
 
-        <div className="topbar-avatar" title="Usuario NexusOdonto">
-          <UserAvatarIcon width="16" height="16" />
-        </div>
       </div>
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
