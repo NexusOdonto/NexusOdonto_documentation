@@ -11,4 +11,4 @@ Este es el primer documento de prueba del sistema NexusOdonto.
 
 ```csharp
 public class Paciente { public string Nombre { get; set; } }
-```
+``` 

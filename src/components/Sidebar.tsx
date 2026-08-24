@@ -9,7 +9,9 @@ import {
   FrontendIcon,
   BitacoraIcon,
   TeamIcon,
+  XIcon,
 } from "./Icons";
+import { useSidebar } from "../context/SidebarContext";
 
 const SECTION_ICONS: Record<string, ReactNode> = {
   Overview: <OverviewIcon />,
@@ -25,9 +27,16 @@ export function Sidebar() {
   const params = useParams();
   const activeSlug = params["*"];
   const location = useLocation();
+  const { isSidebarOpen, closeSidebar } = useSidebar();
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      <div className="sidebar-header">
+        <span className="sidebar-header-title">Navegación</span>
+        <button className="sidebar-close-btn" onClick={closeSidebar}>
+          <XIcon />
+        </button>
+      </div>
       <nav className="sidebar-nav">
         {SECTION_ORDER.map((section) => {
           const specialRoute = SPECIAL_SECTIONS[section];
@@ -41,6 +50,7 @@ export function Sidebar() {
                 <Link
                   to={specialRoute}
                   className={`sidebar-item ${isActive ? "active" : ""}`}
+                  onClick={closeSidebar}
                 >
                   <span className="sidebar-item-icon">{icon}</span>
                   <span className="sidebar-item-label">{label}</span>
@@ -70,6 +80,7 @@ export function Sidebar() {
                         <Link
                           to={`/docs/${doc.slug}`}
                           className={`sidebar-subitem ${isActive ? "active" : ""}`}
+                          onClick={closeSidebar}
                         >
                           {doc.title}
                         </Link>
