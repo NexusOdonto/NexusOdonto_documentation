@@ -544,3 +544,130 @@
     gap: 16px;
   }
 }
+
+/* 4. MÓVILES PEQUEÑOS (Hasta 480px) */
+@media (max-width: 480px) {
+  .home-page {
+    padding: 20px 12px;
+  }
+
+  .home-hero-title {
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .home-hero-subtitle {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .home-hero-badge {
+    font-size: 10px;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
+/* TEAM PAGE RESPONSIVE */
+@media (max-width: 768px) {
+  .team-page {
+    padding: 24px 16px;
+  }
+
+  .team-title {
+    font-size: 28px;
+  }
+
+  .team-filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .team-search-box {
+    width: 100%;
+  }
+
+  .team-pills {
+    flex-wrap: wrap;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-page {
+    padding: 20px 12px;
+  }
+
+  .team-title {
+    font-size: 24px;
+  }
+
+  .team-subtitle {
+    font-size: 14px;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-card-image-wrapper {
+    height: 160px;
+  }
+
+  .team-member-name {
+    font-size: 15px;
+  }
+}
+
+/* BITÁCORA PAGE RESPONSIVE */
+@media (max-width: 768px) {
+  .bitacora-page {
+    padding: 24px 16px;
+  }
+
+  .bitacora-page h1 {
+    font-size: 28px;
+  }
+
+  .bitacora-subtitle {
+    font-size: 14px;
+  }
+
+  .bitacora-entry {
+    padding: 16px 20px;
+  }
+
+  .bitacora-entry h3 {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bitacora-page {
+    padding: 20px 12px;
+  }
+
+  .bitacora-page h1 {
+    font-size: 24px;
+  }
+
+  .bitacora-entry {
+    padding: 14px 16px;
+  }
+
+  .bitacora-entry-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

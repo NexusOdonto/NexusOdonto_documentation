@@ -283,7 +283,7 @@ a:hover {
 /* MAIN CONTENT LAYOUT */
 .docs-content {
   padding: 36px 48px;
-  max-width: 1100px;
+  max-width: 1400px;
   width: 100%;
 }
 
@@ -297,13 +297,16 @@ a:hover {
 .article-page-wrapper {
   display: flex;
   gap: 40px;
-  align-items: flex-start;
   width: 100%;
+  max-width: 100%;
+  position: relative;
+  padding-right: calc(var(--toc-width) + 40px);
 }
 
 .article-page {
-  flex: 1;
   min-width: 0;
+  max-width: 100%;
+  flex: 1;
 }
 
 /* BREADCRUMBS */
@@ -510,33 +513,41 @@ a:hover {
 .toc {
   width: var(--toc-width);
   flex-shrink: 0;
-  position: sticky;
+  position: fixed;
+  right: 20px;
   top: calc(var(--topbar-height) + 24px);
-  padding: 16px;
+  padding: 20px;
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-height: calc(100vh - var(--topbar-height) - 48px);
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  z-index: 40;
 }
 
 .toc-title {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--color-text-muted);
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
+  color: var(--color-primary);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-primary-light);
 }
 
 .toc ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .toc-level-3 {
-  padding-left: 12px;
+  padding-left: 16px;
+  margin-top: 4px;
 }
 
 .toc button {
@@ -547,12 +558,29 @@ a:hover {
   font-family: var(--font-main);
   cursor: pointer;
   text-align: left;
-  line-height: 1.4;
-  transition: color 0.15s ease;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .toc button:hover {
   color: var(--color-primary);
+  background: var(--color-secondary);
+  transform: translateX(4px);
+}
+
+.toc button.toc-active {
+  color: var(--color-primary);
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  font-weight: 700;
+}
+
+.toc button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 /* SEARCH MODAL OVERLAY */
@@ -742,6 +770,10 @@ a:hover {
     grid-template-columns: 1fr;
   }
 
+  .article-page-wrapper {
+    grid-template-columns: 1fr;
+  }
+
   .sidebar {
     position: fixed;
     top: var(--topbar-height);
@@ -808,12 +840,15 @@ a:hover {
   }
 
   .article-page-wrapper {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+
+  .article-page-wrapper {
+    padding-right: 0;
   }
 
   .toc {
-    width: 100%;
-    position: static;
+    display: none;
   }
 
   .topbar-center {
@@ -832,5 +867,136 @@ a:hover {
 
   .sidebar-overlay {
     display: none;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: var(--topbar-height);
+    transform: none;
+  }
+}
+
+/* BREAKPOINT PARA TABLETS (768px - 900px) */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0 12px;
+  }
+
+  .topbar-logo-text {
+    font-size: 14px;
+  }
+
+  .docs-content {
+    padding: 20px 16px;
+  }
+
+  .article-title {
+    font-size: 28px;
+  }
+
+  .article-h2 {
+    font-size: 18px;
+  }
+
+  .article-h3 {
+    font-size: 15px;
+  }
+
+  .article-page-wrapper {
+    padding-right: 0;
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+/* BREAKPOINT PARA MÓVILES PEQUEÑOS (hasta 480px) */
+@media (max-width: 480px) {
+  .topbar {
+    height: 48px;
+    padding: 0 8px;
+  }
+
+  .topbar-logo-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .topbar-logo-text {
+    font-size: 13px;
+  }
+
+  .topbar-logo-badge {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+
+  .topbar-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sidebar {
+    width: 260px;
+  }
+
+  .docs-content {
+    padding: 16px 12px;
+  }
+
+  .article-title {
+    font-size: 24px;
+  }
+
+  .article-h2 {
+    font-size: 16px;
+  }
+
+  .article-h3 {
+    font-size: 14px;
+  }
+
+  .breadcrumbs {
+    font-size: 12px;
+  }
+
+  .search-modal {
+    width: 95vw;
+    max-height: 80vh;
+  }
+
+  /* Article page específico */
+  .article-body {
+    font-size: 14px;
+  }
+
+  .code-window {
+    margin: 16px 0;
+  }
+
+  .code-pre {
+    padding: 14px 16px;
+  }
+
+  .code-pre code {
+    font-size: 12px;
+  }
+
+  .callout-box {
+    padding: 14px 18px;
+    margin: 20px 0;
+  }
+
+  /* Table of contents */
+  .toc {
+    display: none;
+  }
+}
+
+/* BREAKPOINT PARA PANTALLAS GRANDES (1200px+) */
+@media (min-width: 1200px) {
+  .toc {
+    right: 40px;
   }
 }
