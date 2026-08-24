@@ -58,10 +58,6 @@ export function HomePage() {
   return (
     <div className="home-page">
       <section className="home-hero">
-        <div className="home-hero-badge">
-          <span className="home-hero-badge-dot"></span>
-          DOCUMENTACIÓN OFICIAL V2.0
-        </div>
 
         <h1 className="home-hero-title">
           Sistema de Gestión Clínica <span className="home-hero-brand">NexusOdonto</span>

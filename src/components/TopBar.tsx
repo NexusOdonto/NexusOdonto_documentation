@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { SearchModal } from "./SearchModal";
 import { useTheme } from "../context/ThemeContext";
-import { SearchIcon, SunIcon, MoonIcon, UserAvatarIcon } from "./Icons";
+import { SearchIcon, SunIcon, MoonIcon } from "./Icons";
 import { NexusLogo } from "./NexusLogo";
 
 export function TopBar() {
@@ -33,7 +33,6 @@ export function TopBar() {
         <button className="topbar-search-btn" onClick={() => setSearchOpen(true)}>
           <SearchIcon className="topbar-search-icon" />
           <span>Search documentation...</span>
-          <span className="topbar-search-shortcut">⌘K</span>
         </button>
       </div>
 
@@ -46,9 +45,6 @@ export function TopBar() {
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
         </button>
 
-        <div className="topbar-avatar" title="Usuario NexusOdonto">
-          <UserAvatarIcon width="16" height="16" />
-        </div>
       </div>
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
