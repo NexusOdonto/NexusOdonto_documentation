@@ -909,6 +909,9 @@ a:hover {
   .toc {
     display: none;
   }
+  .mobile-menu-toggle {
+    display: none !important;
+  }
 }
 
 /* BREAKPOINT PARA MÓVILES PEQUEÑOS (hasta 480px) */

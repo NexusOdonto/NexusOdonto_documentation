@@ -22,8 +22,8 @@ function DocsLayoutContent() {
 
   return (
     <div className="docs-layout">
-      <TopBar 
-        onMenuClick={toggleSidebar} 
+      <TopBar
+        onMenuClick={toggleSidebar}
         showMenuButton={true}
       />
       <div className="docs-body">

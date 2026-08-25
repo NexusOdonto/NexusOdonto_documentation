@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import {
   ArrowRightIcon,
@@ -6,11 +5,9 @@ import {
 } from "../components/Icons";
 
 export function HomePage() {
-
   return (
     <div className="home-page">
       <section className="home-hero">
-
         <h1 className="home-hero-title">
           Sistema de Gestión Clínica <span className="home-hero-brand">NexusOdonto</span>
         </h1>
@@ -35,6 +32,15 @@ export function HomePage() {
           </a>
         </div>
       </section>
+
+      {/* Imagen destacada debajo del Hero */}
+      <div className="home-hero-image-container">
+        <img
+          src="../public/fondo.jpg" 
+          alt="Vista previa del sistema NexusOdonto"
+          className="home-hero-image"
+        />
+      </div>
     </div>
   );
 }
