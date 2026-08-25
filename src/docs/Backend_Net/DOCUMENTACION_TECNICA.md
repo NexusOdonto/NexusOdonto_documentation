@@ -25,7 +25,7 @@ Esta documentación detalla los componentes fundamentales establecidos en las ca
 
                   ```mermaid
                   graph TD
-                      UI[Cliente React / Servicios Externos] -->|HTTP JSON| API[Capa Api]
+                  UI[Cliente React / Servicios Externos] -->|HTTP JSON| API[Capa Api]
                           API -->|Intercepción de Errores| GEM[GlobalExceptionMiddleware]
                               API -->|Clientes Resilientes| EXT[WhatsApp / Agente Python]
                                   API -->|Casos de Uso| APP[Capa Application]
