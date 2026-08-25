@@ -41,11 +41,11 @@ Utilicé estos colores como referencia para mantener una identidad visual unifor
 
 ### Google Stitch
 
-Utilicé **Google Stitch** para crear los prototipos de la interfaz y probar diferentes propuestas de diseño, distribución y estilos.
+Utilicé [Google Stitch](https://stitch.withgoogle.com/projects/1596711565765847062) para crear los prototipos de la interfaz y probar diferentes propuestas de diseño, distribución y estilos.
 
 ### Canva
 
-También utilicé **Canva** para trabajar en elementos gráficos y realizar ajustes visuales relacionados con la presentación del diseño y la identidad gráfica.
+También utilicé [Canva](https://www.canva.com/design/DAHTPL4QxPw/aYaTdCWNRKSxG5u3VvEHlw/edit) para trabajar en elementos gráficos y realizar ajustes visuales relacionados con la presentación del diseño y la identidad gráfica.
 
 ## 5. Resultado
 
