@@ -22,23 +22,22 @@ export function loadAllDocs(): DocFile[] {
     return {
       slug,
       section,
-      title: data.title || data.name || slug.split("/").pop() || "Sin título",
-      order: data.order ?? 999,
-      date: data.date,
-      author: data.author,
+      title: String(data.title || data.name || slug.split("/").pop() || "Sin título"),
+      order: Number(data.order ?? 999),
+      date: data.date ? String(data.date) : undefined,
+      author: data.author ? String(data.author) : undefined,
       content,
       path,
-      role: data.role,
-      photo: data.photo,
-      name: data.name,
-      avatar: data.avatar,
-      summary: data.summary,
-    };
+      role: data.role ? String(data.role) : undefined,
+      photo: data.photo ? String(data.photo) : undefined,
+      name: data.name ? String(data.name) : undefined,
+      avatar: data.avatar ? String(data.avatar) : undefined,
+      summary: data.summary ? String(data.summary) : undefined,
+    } as DocFile;
   });
 
   return docs.sort((a, b) => a.order - b.order);
 }
-
 export function getDocsBySection(): Record<string, DocFile[]> {
   const docs = loadAllDocs();
   const bySection: Record<string, DocFile[]> = {};
