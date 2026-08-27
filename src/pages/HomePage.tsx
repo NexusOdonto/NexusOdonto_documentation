@@ -36,7 +36,7 @@ export function HomePage() {
       {/* Imagen destacada debajo del Hero */}
       <div className="home-hero-image-container">
         <img
-          src="../public/fondo.jpg" 
+          src="../public/Teams/lider.jpeg" 
           alt="Vista previa del sistema NexusOdonto"
           className="home-hero-image"
         />

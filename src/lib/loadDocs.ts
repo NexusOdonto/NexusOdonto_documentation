@@ -13,31 +13,35 @@ function pathToSlug(path: string): { section: string; slug: string } {
   const slug = parts.join("/").toLowerCase();
   return { section, slug };
 }
-
 export function loadAllDocs(): DocFile[] {
   const docs: DocFile[] = Object.entries(modules).map(([path, raw]) => {
-    const { data, content } = parseFrontmatter(raw);
+    const rawContent = raw as string;
+    const { data, content } = parseFrontmatter(rawContent);
     const { section, slug } = pathToSlug(path);
+
+    // Forzamos el título a ser siempre un string para evitar desajustes de tipo
+    const rawTitle = data.title || data.name || slug.split("/").pop() || "Sin título";
 
     return {
       slug,
       section,
-      title: String(data.title || data.name || slug.split("/").pop() || "Sin título"),
+      title: String(rawTitle),
       order: Number(data.order ?? 999),
       date: data.date ? String(data.date) : undefined,
       author: data.author ? String(data.author) : undefined,
-      content,
+      content: content || "",
       path,
       role: data.role ? String(data.role) : undefined,
       photo: data.photo ? String(data.photo) : undefined,
       name: data.name ? String(data.name) : undefined,
       avatar: data.avatar ? String(data.avatar) : undefined,
       summary: data.summary ? String(data.summary) : undefined,
-    } as DocFile;
+    } as DocFile; // Cast explícito al objeto retornado
   });
 
   return docs.sort((a, b) => a.order - b.order);
 }
+
 export function getDocsBySection(): Record<string, DocFile[]> {
   const docs = loadAllDocs();
   const bySection: Record<string, DocFile[]> = {};
