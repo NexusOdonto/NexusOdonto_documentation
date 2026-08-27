@@ -1,3 +1,36 @@
 @import "./styles/tokens.css";
 @import "./styles/layout.css";
 @import "./styles/pages.css";
+
+/* Estilos globales para Scrollbars (Tema Oscuro NexusOdonto) */
+
+/* 1. Soporte para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* 2. Soporte para Chrome, Edge y Safari (WebKit) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5); /* Color azul primario al pasar el mouse */
+}
+
+/* Ajuste específico para el Sidebar lateral */
+.sidebar, .topbar-sidebar, aside {
+  scrollbar-gutter: stable;
+}

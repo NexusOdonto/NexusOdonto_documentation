@@ -30,7 +30,7 @@ export function TopBar({ onMenuClick, showMenuButton = false }: TopBarProps) {
       <div className="topbar-left">
         {showMenuButton && (
           <button
-            className="topbar-action-btn"
+            className="topbar-action-btn menu-btn"
             onClick={onMenuClick}
             title="Abrir menú"
             style={{ marginRight: '8px' }}

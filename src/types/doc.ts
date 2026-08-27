@@ -9,5 +9,8 @@ export interface DocFile {
   path: string;
   type?: "Feature" | "Fix" | "Chore";
   role?: string;
-  photo?: string; 
+  photo?: string;
+  name?: string;
+  avatar?: string;
+  summary?: string;
 }

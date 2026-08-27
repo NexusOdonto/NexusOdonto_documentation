@@ -22,12 +22,17 @@ export function loadAllDocs(): DocFile[] {
     return {
       slug,
       section,
-      title: data.title || slug.split("/").pop() || "Sin título",
+      title: data.title || data.name || slug.split("/").pop() || "Sin título",
       order: data.order ?? 999,
       date: data.date,
       author: data.author,
       content,
       path,
+      role: data.role,
+      photo: data.photo,
+      name: data.name,
+      avatar: data.avatar,
+      summary: data.summary,
     };
   });
 
