@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getDocsBySection } from "../lib/loadDocs";
-import { MailIcon, CodeIcon, GlobeIcon, SearchIcon } from "../components/Icons";
+import { GlobeIcon, SearchIcon } from "../components/Icons";
 
 export function TeamPage() {
   const bySection = getDocsBySection();
