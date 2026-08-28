@@ -1,7 +1,7 @@
 ---
 name: "Jhon Alejandro Escobar Lozada"
 role: "Backend Software Engineer & API Integration"
-avatar: "/teams/JhonAlejandorEscobarLozada.jpeg"
+avatar: "../../assets/teams/JhonAlejandroEscobarLozada.jpeg"
 summary: "Construye y asegura los endpoints de la API, middlewares de autenticación e integración de servicios internos."
 ---
 

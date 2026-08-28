@@ -1,7 +1,7 @@
 ---
 name: "Sergio Andrés Serrano Rivero"
 role: "Backend Software Engineer & Database Specialist"
-avatar: "/teams/SergioAndresSerranoRivero.jpeg"
+avatar: "../../assets/teams/SergioAndresSerranoRivero.jpeg"
 summary: "Especializado en el desarrollo de la lógica de negocio en .NET, persistencia de datos y optimización de consultas."
 ---
 

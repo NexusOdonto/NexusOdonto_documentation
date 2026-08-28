@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { searchDocs } from "../lib/search";
-import { SPECIAL_SECTIONS } from "../lib/sectionConfig";
+import { searchDocs } from "../../utils/search";
+import { SPECIAL_SECTIONS } from "../../utils/sectionConfig";
 import { SearchIcon } from "./Icons";
 
 interface SearchModalProps {
@@ -64,21 +64,21 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               <div className="search-suggestions">
                 <button
                   className="search-suggestion-btn"
-                  onClick={() => goTo("Backend_Net", "backend_net/arquitectura-backend")}
+                  onClick={() => goTo("Backend_Net", "backend_net/backend-arquitectura-base-infraestructura")}
                 >
                   Arquitectura del Backend .NET
                 </button>
                 <button
                   className="search-suggestion-btn"
-                  onClick={() => goTo("Agente_IA", "agente_ia/agente-ia-config")}
+                  onClick={() => goTo("Agente_IA", "agente_ia/documentacion_tecnica")}
                 >
-                  Configuración del Agente IA
+                  Documentación Técnica Agente IA
                 </button>
                 <button
                   className="search-suggestion-btn"
-                  onClick={() => goTo("Frontend_React", "frontend_react/componentes-ui")}
+                  onClick={() => goTo("Frontend_React", "frontend_react/arquitectura-y-guia-desarrollo")}
                 >
-                  Componentes Frontend React
+                  Guía de Desarrollo Frontend React
                 </button>
               </div>
             </div>

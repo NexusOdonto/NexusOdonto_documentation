@@ -1,13 +1,13 @@
 ---
 name: "Felipe Corredor Silva"
 role: "Project Lead & Tech Director"
-avatar: "/teams/FelipeCorredorSilva.jpeg"
+avatar: "../../assets/teams/FelipeCorredorSilva.jpeg"
 summary: "Direcciona la arquitectura general, gestión integral del proyecto NexusOdonto y coordinación de sprints."
 ---
 
 ## Carta de Presentación
 
-Felipe Corredor Silva es el Project Lead & Tech Director de NexusOdonto, con amplia experiencia en gestión de proyectos tecnológicos y arquitectura de software. Su visión estratégica y capacidad de liderazgo han sido fundamentales para el desarrollo y éxito del sistema de gestión clínica odontológica.
+Felipe Corredor Silva es el Project Lead & Tech Director de NexusOdonto, con amplia experiencia en gestión de proyectos tecnológicos y arquitectura de software. Su visión estratégica y capacidad de liderazgo han sido fundamentales para el desarrollo y éxito de la plataforma de documentación del proyecto.
 
 ### Responsabilidades Clave
 

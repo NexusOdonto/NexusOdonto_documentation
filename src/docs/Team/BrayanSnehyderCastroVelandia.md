@@ -1,7 +1,7 @@
 ---
 name: "Brayan Snehyder Castro Velandia"
 role: "Frontend Software Engineer"
-avatar: "/teams/BrayanSnehyderCastroVelandia.jpeg"
+avatar: "../../assets/teams/BrayanSnehyderCastroVelandia.jpeg"
 summary: "Desarrolla componentes visuales de alta precisión, consumo de APIs REST y flujos interactivos de la plataforma."
 ---
 

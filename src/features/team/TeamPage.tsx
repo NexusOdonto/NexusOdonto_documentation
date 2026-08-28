@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { getDocsBySection } from "../lib/loadDocs";
-import { GlobeIcon, SearchIcon } from "../components/Icons";
+import { getDocsBySection } from "../../utils/loadDocs";
+import { GlobeIcon, SearchIcon } from "../../components/ui/Icons";
 
 export function TeamPage() {
   const bySection = getDocsBySection();
@@ -18,7 +18,7 @@ export function TeamPage() {
     bio: doc.content || "",
   }));
 
-  const categories = ["All Roles", "Engineering", "AI/ML", "Frontend", "Backend"];
+  const categories = ["All Roles",  "Frontend", "Backend"];
 
   const filteredMembers = teamMembers.filter((m) => {
     const matchesCat = activeCategory === "All Roles" || 
@@ -34,9 +34,9 @@ export function TeamPage() {
     <div className="team-page">
       <div className="team-header">
         <span className="team-category-badge">— TEAM DIRECTORY</span>
-        <h1 className="team-title">Meet the minds behind NexusOdonto.</h1>
+        <h1 className="team-title">Conozca a las mentes detrás de NexusOdonto.</h1>
         <p className="team-subtitle">
-          A cross-functional team of software engineers and AI specialists dedicated to building the future of dental documentation.
+          Un equipo multidisciplinario de ingenieros de software y especialistas en IA dedicado a construir y mantener la plataforma de documentación del proyecto.
         </p>
       </div>
 

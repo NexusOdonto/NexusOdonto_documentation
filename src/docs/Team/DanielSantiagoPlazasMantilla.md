@@ -1,7 +1,7 @@
 ---
 name: "Daniel Santiago Plazas Mantilla"
 role: "Backend Software Engineer & System Architect"
-avatar: "/teams/DannielSantiagoPlazaMantilla.jpeg"
+avatar: "../../assets/teams/DanielSantiagoPlazaMantilla.jpeg"
 summary: "Diseña modelos de datos relacionales, patrones de arquitectura limpia y módulos del servidor en C# .NET."
 ---
 

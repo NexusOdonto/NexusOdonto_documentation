@@ -4,10 +4,10 @@ import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import { getDocBySlug } from "../lib/loadDocs";
-import { extractToc, slugify } from "../lib/toc";
-import { TableOfContents } from "../components/TableOfContents";
-import { CheckCircleIcon, InfoIcon, CopyIcon } from "../components/Icons";
+import { getDocBySlug } from "../../utils/loadDocs";
+import { extractToc, slugify } from "../../utils/toc";
+import { TableOfContents } from "../../components/ui/TableOfContents";
+import { CheckCircleIcon, InfoIcon, CopyIcon } from "../../components/ui/Icons";
 
 function getTextFromChildren(children: ReactNode): string {
   if (typeof children === "string" || typeof children === "number") {
