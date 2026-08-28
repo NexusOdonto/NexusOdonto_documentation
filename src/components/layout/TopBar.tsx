@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { SearchModal } from "./SearchModal";
-import { useTheme } from "../context/ThemeContext";
-import { SearchIcon, SunIcon, MoonIcon, MenuIcon } from "./Icons";
-import { NexusLogo } from "./NexusLogo";
+import { SearchModal } from "../ui/SearchModal";
+import { useTheme } from "../../context/ThemeContext";
+import { SearchIcon, SunIcon, MoonIcon, MenuIcon } from "../ui/Icons";
+import { NexusLogo } from "../ui/NexusLogo";
 
 interface TopBarProps {
   onMenuClick?: () => void;

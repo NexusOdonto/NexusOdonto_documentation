@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { getDocsBySection } from "../lib/loadDocs";
-import { SECTION_ORDER, SECTION_LABELS, SPECIAL_SECTIONS } from "../lib/sectionConfig";
+import { getDocsBySection } from "../../utils/loadDocs";
+import { SECTION_ORDER, SECTION_LABELS, SPECIAL_SECTIONS } from "../../utils/sectionConfig";
 import {
   OverviewIcon,
   AgentIcon,
@@ -11,14 +11,14 @@ import {
   BitacoraIcon,
   TeamIcon,
   XIcon,
-} from "./Icons";
-import { useSidebar } from "../context/SidebarContext";
+} from "../ui/Icons";
+import { useSidebar } from "../../context/SidebarContext";
 
 const SECTION_ICONS: Record<string, ReactNode> = {
   Overview: <OverviewIcon />,
   Agente_IA: <AgentIcon />,
   Backend_Net: <BackendIcon />,
-  Base_de_datos: <BaseDeDatosIcon/>,
+  Base_De_Datos: <BaseDeDatosIcon/>,
   Frontend_React: <FrontendIcon />,
   Bitacora: <BitacoraIcon />,
   Team: <TeamIcon />,

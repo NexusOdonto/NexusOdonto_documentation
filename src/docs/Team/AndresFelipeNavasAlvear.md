@@ -1,7 +1,7 @@
 ---
 name: "Andrés Felipe Navas Alvear"
 role: "Lead Frontend Engineer & UI/UX Supervisor"
-avatar: "/teams/AndresFelipeNavasAlvear.jpeg"
+avatar: "../../assets/teams/AndresFelipeNavasAlvear.jpeg"
 summary: "Lidera la arquitectura del frontend en React/Tailwind, supervisa y co-desarrolla interfaces interactivas junto al equipo frontend."
 ---
 

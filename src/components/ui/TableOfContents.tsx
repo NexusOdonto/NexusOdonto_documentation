@@ -1,4 +1,4 @@
-import type { TocItem } from "../lib/toc";
+import type { TocItem } from "../../utils/toc";
 import { useState, useEffect } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "./Icons";
 

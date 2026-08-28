@@ -1,7 +1,7 @@
 ---
 name: "Kevin Geovanni Pico Ramírez"
 role: "AI Engineer & Machine Learning Specialist"
-avatar: "/teams/KevinGeovanniPicoRamirez.jpeg"
+avatar: "../../assets/teams/KevinGeovanniPicoRamirez.jpeg"
 summary: "Encargado de la integración de modelos de IA, agentes conversacionales y lógica predictiva para triaje odontológico."
 ---
 

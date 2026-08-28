@@ -1,11 +1,11 @@
 ---
 name: "Jeison Leonardo Cristancho"
 role: "AI Operations & Intelligent Agents Engineer"
-avatar: "/teams/JeisonLeonardoCristancho.jpeg"
+avatar: "../../assets/teams/JeisonLeonardoCristancho.jpeg"
 summary: "Diseña el comportamiento, automatizaciones cognitivas y flujos de trabajo de los agentes de IA dentro del ecosistema."
 ---
 
-## Carta de Presentaci
+## Carta de Presentación
 Jeison Leonardo Cristancho es AI Operations & Intelligent Agents Engineer en NexusOdonto, especialista en flujos de automatización cognitiva, procesamiento de datos para modelos de IA y diseño de comportamiento de agentes asistentes. Su experiencia en orquestación de sistemas de IA y optimización de flujos de trabajo cognitivos ha sido esencial para la funcionalidad de los agentes inteligentes del sistema.
 
 ### Responsabilidades Clave

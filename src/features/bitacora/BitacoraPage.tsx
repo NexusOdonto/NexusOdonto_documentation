@@ -1,4 +1,4 @@
-import { getDocsBySection } from "../lib/loadDocs";
+import { getDocsBySection } from "../../utils/loadDocs";
 
 const TYPE_COLORS: Record<string, string> = {
   Feature: "var(--color-tertiary)",
