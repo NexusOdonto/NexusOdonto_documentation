@@ -45,7 +45,7 @@ export function TopBar({ onMenuClick, showMenuButton = false }: TopBarProps) {
       </div>
 
       <div className="topbar-center">
-        <button className="topbar-search-btn" onClick={() => setSearchOpen(true)}>
+        <button className="topbar-search-btn desktop-search-btn" onClick={() => setSearchOpen(true)}>
           <SearchIcon className="topbar-search-icon" />
           <span className="topbar-search-placeholder">Buscar documentación...</span>
           <span className="topbar-search-shortcut">Ctrl K</span>
@@ -54,13 +54,22 @@ export function TopBar({ onMenuClick, showMenuButton = false }: TopBarProps) {
 
       <div className="topbar-right">
         <button
+          className="topbar-action-btn mobile-search-btn mobile-only"
+          onClick={() => setSearchOpen(true)}
+          title="Buscar"
+          aria-label="Buscar"
+        >
+          <SearchIcon />
+        </button>
+
+        <button
           className="topbar-action-btn"
           onClick={toggleTheme}
           title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+          aria-label="Cambiar tema"
         >
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
         </button>
-
       </div>
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

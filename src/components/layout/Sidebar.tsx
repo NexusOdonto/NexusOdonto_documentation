@@ -16,6 +16,7 @@ import {
   XIcon,
   ChevronRightIcon,
 } from "../ui/Icons";
+import { NexusLogo } from "../ui/NexusLogo";
 import { useSidebar } from "../../context/SidebarContext";
 
 const SECTION_ICONS: Record<string, ReactNode> = {
@@ -39,6 +40,21 @@ export function Sidebar() {
   const normActiveSlug = rawActiveSlug ? normalizeSlug(decodeURIComponent(rawActiveSlug)) : "";
   const location = useLocation();
   const { isSidebarOpen, closeSidebar, isCollapsed, toggleCollapse, setCollapsed } = useSidebar();
+
+  // Detección de viewport para no aplicar modo icono colapsado en Drawer móvil
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== "undefined" ? window.innerWidth >= 1024 : true
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const effectivelyCollapsed = isCollapsed && isDesktop;
 
   // Estado para carpetas desplegables
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
@@ -81,7 +97,7 @@ export function Sidebar() {
   }, [normActiveSlug, rawActiveSlug, bySection]);
 
   const toggleSection = (section: string) => {
-    if (isCollapsed) {
+    if (effectivelyCollapsed) {
       setCollapsed(false);
       setOpenSections((prev) => ({ ...prev, [section]: true }));
       return;
@@ -94,12 +110,17 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""} ${isCollapsed ? "sidebar-collapsed" : ""}`}
+      className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""} ${effectivelyCollapsed ? "sidebar-collapsed" : ""}`}
       aria-label="Navegación de módulos"
     >
       {/* Cabecera del Sidebar */}
       <div className="sidebar-top-bar">
-        {!isCollapsed && <span className="sidebar-top-title">Navegación</span>}
+        <div className="sidebar-brand-mobile mobile-only">
+          <NexusLogo />
+          <span className="sidebar-brand-badge">Docs</span>
+        </div>
+
+        {!effectivelyCollapsed && <span className="sidebar-top-title desktop-only">Navegación</span>}
 
         {/* Botón de cerrar solo en móvil */}
         <button
@@ -126,16 +147,16 @@ export function Sidebar() {
                   to={specialRoute}
                   className={`sidebar-item ${isActive ? "active" : ""}`}
                   onClick={closeSidebar}
-                  title={isCollapsed ? label : undefined}
+                  title={effectivelyCollapsed ? label : undefined}
                 >
                   <motion.span
                     className="sidebar-item-icon"
-                    whileHover={{ scale: 1.15, rotate: isCollapsed ? 6 : 0 }}
+                    whileHover={{ scale: 1.15, rotate: effectivelyCollapsed ? 6 : 0 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     {icon}
                   </motion.span>
-                  {!isCollapsed && <span className="sidebar-item-label">{label}</span>}
+                  {!effectivelyCollapsed && <span className="sidebar-item-label">{label}</span>}
                 </Link>
               </div>
             );
@@ -143,7 +164,7 @@ export function Sidebar() {
 
           const docs = bySection[section] || [];
           const isSectionActive = docs.some((d) => normalizeSlug(d.slug) === normActiveSlug);
-          const isOpen = !!openSections[section] && !isCollapsed;
+          const isOpen = !!openSections[section] && !effectivelyCollapsed;
 
           return (
             <div key={section} className="sidebar-section">
@@ -152,16 +173,16 @@ export function Sidebar() {
                 className={`sidebar-section-header ${isSectionActive ? "active-group" : ""}`}
                 onClick={() => toggleSection(section)}
                 aria-expanded={isOpen}
-                title={isCollapsed ? label : undefined}
+                title={effectivelyCollapsed ? label : undefined}
               >
                 <motion.span
                   className="sidebar-item-icon"
-                  whileHover={{ scale: 1.15, rotate: isCollapsed ? 6 : 0 }}
+                  whileHover={{ scale: 1.15, rotate: effectivelyCollapsed ? 6 : 0 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {icon}
                 </motion.span>
-                {!isCollapsed && (
+                {!effectivelyCollapsed && (
                   <>
                     <span className="sidebar-section-title">{label}</span>
                     <ChevronRightIcon className={`sidebar-chevron ${isOpen ? "open" : ""}`} />
@@ -170,7 +191,7 @@ export function Sidebar() {
               </button>
 
               <AnimatePresence initial={false}>
-                {isOpen && !isCollapsed && (
+                {isOpen && !effectivelyCollapsed && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
