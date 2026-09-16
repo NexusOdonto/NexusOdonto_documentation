@@ -47,7 +47,8 @@ export function TopBar({ onMenuClick, showMenuButton = false }: TopBarProps) {
       <div className="topbar-center">
         <button className="topbar-search-btn" onClick={() => setSearchOpen(true)}>
           <SearchIcon className="topbar-search-icon" />
-          <span>Search documentation...</span>
+          <span className="topbar-search-placeholder">Buscar documentación...</span>
+          <span className="topbar-search-shortcut">Ctrl K</span>
         </button>
       </div>
 

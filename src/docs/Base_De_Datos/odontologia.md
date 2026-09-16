@@ -1,3 +1,12 @@
+---
+title: "Diccionario de Datos y Catálogos Clínicos"
+section: "Base_De_Datos"
+order: 6
+date: "2026-09-16"
+author: "Equipo NexusOdonto"
+summary: "Diccionario de Datos y Catálogos Clínicos — Documentación integral del ecosistema NexusOdonto."
+---
+
 # Odontología — SQL
 
 ```sql

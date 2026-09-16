@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getDocsBySection } from "../../utils/loadDocs";
 import { GlobeIcon, SearchIcon } from "../../components/ui/Icons";
+import { GridReveal } from "../../components/ui/GridReveal";
 
 export function TeamPage() {
   const bySection = getDocsBySection();
@@ -18,10 +19,11 @@ export function TeamPage() {
     bio: doc.content || "",
   }));
 
-  const categories = ["All Roles",  "Frontend", "Backend"];
+  const categories = ["All Roles", "Frontend", "Backend"];
 
   const filteredMembers = teamMembers.filter((m) => {
-    const matchesCat = activeCategory === "All Roles" || 
+    const matchesCat =
+      activeCategory === "All Roles" ||
       m.role.toLowerCase().includes(activeCategory.toLowerCase());
     const matchesSearch =
       m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -69,7 +71,13 @@ export function TeamPage() {
           <div key={member.id} className="team-card">
             <div className="team-card-image-wrapper">
               {member.avatar ? (
-                <img src={member.avatar} alt={member.name} className="team-card-img" />
+                <GridReveal
+                  src={member.avatar}
+                  alt={member.name}
+                  caption={member.name.split(" ")[0]}
+                  aspect={1}
+                  className="team-card-img"
+                />
               ) : (
                 <div className="team-card-avatar-fallback">
                   {member.name.charAt(0).toUpperCase()}

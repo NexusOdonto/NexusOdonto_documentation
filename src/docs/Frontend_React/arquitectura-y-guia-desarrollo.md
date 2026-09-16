@@ -1,3 +1,12 @@
+---
+title: "Guía de Arquitectura Frontend y Patrones"
+section: "Frontend_React"
+order: 3
+date: "2026-08-27"
+author: "Equipo NexusOdonto"
+summary: "Guía de Arquitectura Frontend y Patrones — Documentación integral del ecosistema NexusOdonto."
+---
+
 # Arquitectura del Proyecto y Guía de Desarrollo
 
 description: Resumen de refactorizaciones, sistema de temas y tutorial paso a paso para crear nuevas vistas.
