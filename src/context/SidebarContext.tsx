@@ -1,21 +1,49 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface SidebarContextType {
-  isSidebarOpen: boolean;
+  isSidebarOpen: boolean; // Para Drawer en móviles (< 1024px)
+  isCollapsed: boolean;   // Para colapsar/desplegar en Desktop (>= 1024px)
   toggleSidebar: () => void;
   closeSidebar: () => void;
+  toggleCollapse: () => void;
+  setCollapsed: (val: boolean) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
+    return localStorage.getItem("nexus_sidebar_collapsed") === "true";
+  });
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   const closeSidebar = () => setIsSidebarOpen(false);
 
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem("nexus_sidebar_collapsed", String(next));
+      return next;
+    });
+  };
+
+  const setCollapsed = (val: boolean) => {
+    setIsCollapsed(val);
+    localStorage.setItem("nexus_sidebar_collapsed", String(val));
+  };
+
   return (
-    <SidebarContext.Provider value={{ isSidebarOpen, toggleSidebar, closeSidebar }}>
+    <SidebarContext.Provider
+      value={{
+        isSidebarOpen,
+        isCollapsed,
+        toggleSidebar,
+        closeSidebar,
+        toggleCollapse,
+        setCollapsed,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
   );

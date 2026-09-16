@@ -94,12 +94,53 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="home-tech-card-body">
-            <img
-              src="/lider.jpg"
-              alt="Plataforma de Documentación NexusOdonto"
-              className="home-tech-card-image"
-            />
+          <div className="home-tech-card-body mascot-layout">
+            <div className="mascot-info-col">
+              <div className="mascot-badge-row">
+                <span className="home-mascot-badge">⭐ Mascota Oficial del Equipo</span>
+                <span className="mascot-status-pill">🐾 Guardián Activo</span>
+              </div>
+              
+              <h2 className="mascot-title">Líder NexusOdonto</h2>
+              
+              <p className="home-mascot-caption">
+                Líder espiritual y guardián del código clínico de NexusOdonto 🐾✨
+              </p>
+
+              <div className="mascot-stats-grid">
+                <div className="mascot-stat-item">
+                  <span className="mascot-stat-icon">🛡️</span>
+                  <div>
+                    <span className="mascot-stat-label">Supervisión</span>
+                    <span className="mascot-stat-value">Código 100% libre de bugs</span>
+                  </div>
+                </div>
+                <div className="mascot-stat-item">
+                  <span className="mascot-stat-icon">⚡</span>
+                  <div>
+                    <span className="mascot-stat-label">Energía del Equipo</span>
+                    <span className="mascot-stat-value">Siempre al 100%</span>
+                  </div>
+                </div>
+                <div className="mascot-stat-item">
+                  <span className="mascot-stat-icon">🦷</span>
+                  <div>
+                    <span className="mascot-stat-label">Ecosistema Clínico</span>
+                    <span className="mascot-stat-value">Protegido & Seguro</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mascot-media-col">
+              <div className="mascot-photo-frame">
+                <img
+                  src="/lider.jpg"
+                  alt="Mascota Oficial NexusOdonto"
+                  className="mascot-photo-img"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

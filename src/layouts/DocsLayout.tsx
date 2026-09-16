@@ -7,7 +7,7 @@ import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { useEffect } from "react";
 
 function DocsLayoutContent() {
-  const { isSidebarOpen, closeSidebar, toggleSidebar } = useSidebar();
+  const { isSidebarOpen, isCollapsed, closeSidebar, toggleSidebar, toggleCollapse } = useSidebar();
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -22,15 +22,23 @@ function DocsLayoutContent() {
     };
   }, [isSidebarOpen]);
 
+  const handleMenuClick = () => {
+    if (window.innerWidth >= 1024) {
+      toggleCollapse();
+    } else {
+      toggleSidebar();
+    }
+  };
+
   return (
-    <div className="docs-layout">
+    <div className={`docs-layout ${isCollapsed ? 'layout-sidebar-collapsed' : ''}`}>
       <ScrollProgress />
       <WelcomeSplash />
       <TopBar
-        onMenuClick={toggleSidebar}
+        onMenuClick={handleMenuClick}
         showMenuButton={true}
       />
-      <div className="docs-body">
+      <div className={`docs-body ${isCollapsed ? 'body-sidebar-collapsed' : ''}`}>
         <Sidebar />
         <main className={`docs-content ${isHomePage ? 'home-content' : ''}`}>
           <Outlet />

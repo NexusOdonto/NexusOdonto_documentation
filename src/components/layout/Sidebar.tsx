@@ -38,10 +38,24 @@ export function Sidebar() {
   const rawActiveSlug = params["*"] || "";
   const normActiveSlug = rawActiveSlug ? normalizeSlug(decodeURIComponent(rawActiveSlug)) : "";
   const location = useLocation();
-  const { isSidebarOpen, closeSidebar } = useSidebar();
+  const { isSidebarOpen, closeSidebar, isCollapsed, toggleCollapse, setCollapsed } = useSidebar();
 
   // Estado para carpetas desplegables
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  // Atajo de teclado: Ctrl + B para recoger / desplegar sidebar
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        if (window.innerWidth >= 1024) {
+          toggleCollapse();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleCollapse]);
 
   // Auto-expandir la carpeta que contiene el documento activo
   useEffect(() => {
@@ -67,6 +81,11 @@ export function Sidebar() {
   }, [normActiveSlug, rawActiveSlug, bySection]);
 
   const toggleSection = (section: string) => {
+    if (isCollapsed) {
+      setCollapsed(false);
+      setOpenSections((prev) => ({ ...prev, [section]: true }));
+      return;
+    }
     setOpenSections((prev) => ({
       ...prev,
       [section]: !prev[section],
@@ -74,13 +93,25 @@ export function Sidebar() {
   };
 
   return (
-    <aside className={`sidebar ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-      <div className="sidebar-header">
-        <span className="sidebar-header-title">Navegación</span>
-        <button className="sidebar-close-btn" onClick={closeSidebar}>
+    <aside
+      className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""} ${isCollapsed ? "sidebar-collapsed" : ""}`}
+      aria-label="Navegación de módulos"
+    >
+      {/* Cabecera del Sidebar */}
+      <div className="sidebar-top-bar">
+        {!isCollapsed && <span className="sidebar-top-title">Navegación</span>}
+
+        {/* Botón de cerrar solo en móvil */}
+        <button
+          type="button"
+          className="sidebar-close-btn mobile-only"
+          onClick={closeSidebar}
+          aria-label="Cerrar menú"
+        >
           <XIcon />
         </button>
       </div>
+
       <nav className="sidebar-nav">
         {SECTION_ORDER.map((section) => {
           const specialRoute = SPECIAL_SECTIONS[section];
@@ -95,9 +126,16 @@ export function Sidebar() {
                   to={specialRoute}
                   className={`sidebar-item ${isActive ? "active" : ""}`}
                   onClick={closeSidebar}
+                  title={isCollapsed ? label : undefined}
                 >
-                  <span className="sidebar-item-icon">{icon}</span>
-                  <span className="sidebar-item-label">{label}</span>
+                  <motion.span
+                    className="sidebar-item-icon"
+                    whileHover={{ scale: 1.15, rotate: isCollapsed ? 6 : 0 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {icon}
+                  </motion.span>
+                  {!isCollapsed && <span className="sidebar-item-label">{label}</span>}
                 </Link>
               </div>
             );
@@ -105,7 +143,7 @@ export function Sidebar() {
 
           const docs = bySection[section] || [];
           const isSectionActive = docs.some((d) => normalizeSlug(d.slug) === normActiveSlug);
-          const isOpen = !!openSections[section];
+          const isOpen = !!openSections[section] && !isCollapsed;
 
           return (
             <div key={section} className="sidebar-section">
@@ -114,14 +152,25 @@ export function Sidebar() {
                 className={`sidebar-section-header ${isSectionActive ? "active-group" : ""}`}
                 onClick={() => toggleSection(section)}
                 aria-expanded={isOpen}
+                title={isCollapsed ? label : undefined}
               >
-                <span className="sidebar-item-icon">{icon}</span>
-                <span className="sidebar-section-title">{label}</span>
-                <ChevronRightIcon className={`sidebar-chevron ${isOpen ? "open" : ""}`} />
+                <motion.span
+                  className="sidebar-item-icon"
+                  whileHover={{ scale: 1.15, rotate: isCollapsed ? 6 : 0 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {icon}
+                </motion.span>
+                {!isCollapsed && (
+                  <>
+                    <span className="sidebar-section-title">{label}</span>
+                    <ChevronRightIcon className={`sidebar-chevron ${isOpen ? "open" : ""}`} />
+                  </>
+                )}
               </button>
 
               <AnimatePresence initial={false}>
-                {isOpen && (
+                {isOpen && !isCollapsed && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
