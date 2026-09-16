@@ -10,15 +10,22 @@ import {
   FrontendIcon,
   BitacoraIcon,
   TeamIcon,
+  UserAvatarIcon,
+  CodeIcon,
   XIcon,
 } from "../ui/Icons";
 import { useSidebar } from "../../context/SidebarContext";
 
 const SECTION_ICONS: Record<string, ReactNode> = {
   Overview: <OverviewIcon />,
+  "01_Arquitectura_y_Entorno": <BackendIcon />,
+  "02_Roles_y_Permisos": <UserAvatarIcon />,
+  "03_Modulos_Frontend": <FrontendIcon />,
+  "04_API_y_Servicios": <CodeIcon />,
+  "05_Bitacora_de_Commits_y_Dailies": <BitacoraIcon />,
   Agente_IA: <AgentIcon />,
   Backend_Net: <BackendIcon />,
-  Base_De_Datos: <BaseDeDatosIcon/>,
+  Base_De_Datos: <BaseDeDatosIcon />,
   Frontend_React: <FrontendIcon />,
   Bitacora: <BitacoraIcon />,
   Team: <TeamIcon />,

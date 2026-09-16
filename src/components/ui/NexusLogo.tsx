@@ -12,18 +12,20 @@ export function NexusLogoIcon({
 
   return (
     <img
-      src={isDark ? "/logo-icon-dark.png" : "/logo-icon-light.png"}
-      alt="NexusOdonto Icon"
+      src="/favicon.svg"
+      alt="NexusOdonto Logo"
       width={size}
       height={size}
-      className={className}
+      className={`nexus-logo-icon ${className}`}
       style={{
         width: `${size}px`,
         height: `${size}px`,
         objectFit: "contain",
         flexShrink: 0,
-        filter: isDark ? "brightness(1.8) contrast(1.2)" : "none",
-        transition: "filter 0.2s ease",
+        filter: isDark
+          ? "brightness(1.25) contrast(1.1) drop-shadow(0 0 8px rgba(139, 184, 162, 0.45))"
+          : "brightness(0.95) contrast(1.08) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.15))",
+        transition: "filter 0.3s ease, transform 0.2s ease",
       }}
     />
   );
