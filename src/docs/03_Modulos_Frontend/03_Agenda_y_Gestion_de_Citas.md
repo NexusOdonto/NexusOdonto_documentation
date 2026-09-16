@@ -22,9 +22,25 @@ El módulo de citas combina una vista tabular de alta densidad (`CitasTable.tsx`
 
 ---
 
-## 2. Refactor Tabular de `CitasTable.tsx`
+## 2. Vista Semanal de 7 Días y Agrupación Horaria
+
+* **Calendario de 7 Días sin Recortes:** La vista semanal muestra los 7 días completos (Lunes a Domingo) adaptándose fluidamente al ancho disponible de la pantalla.
+* **Agrupación Inteligente por Franja Horaria:** Las citas concurrentes se consolidan en un contador numérico con indicador visual de estado (*badge*), evitando saturación visual por nombres extensos.
+* **Modal Dossier Interactivo:** Al hacer clic en cualquier celda con citas, se despliega un modal animado tipo *dossier folder* que lista los pacientes agendados, doctor tratante, motivo de consulta y acciones inmediatas de gestión.
+
+---
+
+## 3. Reglas de Validación de Concurrencia y Capacidad
+
+* **Prevención de Citas Duplicadas por Paciente:** Un mismo paciente no puede agendar ni tener dos citas registradas para la misma fecha y hora.
+* **Control de Capacidad por Profesional:** La agenda valida en tiempo real la disponibilidad y número máximo de pacientes simultáneos por odontólogo y consultorio.
+
+---
+
+## 4. Refactor Tabular de `CitasTable.tsx` y Paginación
 
 Para optimizar la legibilidad en pantallas clínicas de recepción y consultorio, la tabla de citas fue refactorizada a un diseño estructurado con:
-* Paginación dinámica y búsqueda en tiempo real por nombre de paciente o documento.
+* Paginación dinámica estandarizada a **8 elementos por página** con truncamiento inteligente de texto.
+* Búsqueda en tiempo real por nombre de paciente, documento o doctor.
 * Filtros rápidos por estado de cita (`Todas`, `Hoy`, `Pendientes`, `Completadas`).
 * Acciones contextuales por fila (Confirmar, Reagendar, Cancelar, Atender).
