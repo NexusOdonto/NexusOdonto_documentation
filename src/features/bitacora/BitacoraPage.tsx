@@ -9,10 +9,7 @@ const TYPE_COLORS: Record<string, string> = {
 
 export function BitacoraPage() {
   const bySection = getDocsBySection();
-  const allBitacoras = [
-    ...(bySection["05_Bitacora_de_Commits_y_Dailies"] || []),
-    ...(bySection["Bitacora"] || []),
-  ];
+  const allBitacoras = bySection["05_Bitacora_de_Commits_y_Dailies"] || [];
 
   const entries = allBitacoras
     .slice()

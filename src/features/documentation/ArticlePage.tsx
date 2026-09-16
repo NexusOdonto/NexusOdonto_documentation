@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import { getDocBySlug } from "../../utils/loadDocs";
-import { extractToc, slugify } from "../../utils/toc";
+import { getDocBySlug, normalizeSlug } from "../../utils/loadDocs";
+import { extractToc, slugify, cleanHeaderText } from "../../utils/toc";
 import { TableOfContents } from "../../components/ui/TableOfContents";
 import { CheckCircleIcon, InfoIcon, CopyIcon } from "../../components/ui/Icons";
 
@@ -30,6 +30,11 @@ export function ArticlePage() {
   const rawSlug = params["*"] || "";
   const doc = rawSlug ? getDocBySlug(rawSlug) : undefined;
   const [copiedCodeIndex, setCopiedCodeIndex] = useState<number | null>(null);
+
+  // Restablecer scroll al tope cada vez que se cambia de documento
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [rawSlug]);
 
   if (!doc) {
     return (
@@ -80,12 +85,39 @@ export function ArticlePage() {
             rehypePlugins={[rehypeHighlight]}
             components={{
               h2: ({ children }) => {
-                const text = getTextFromChildren(children);
-                return <h2 id={slugify(text)} className="article-h2">{children}</h2>;
+                const rawText = getTextFromChildren(children);
+                const clean = cleanHeaderText(rawText);
+                return (
+                  <h2 id={slugify(clean)} className="article-h2" style={{ scrollMarginTop: "80px" }}>
+                    {children}
+                  </h2>
+                );
               },
               h3: ({ children }) => {
-                const text = getTextFromChildren(children);
-                return <h3 id={slugify(text)} className="article-h3">{children}</h3>;
+                const rawText = getTextFromChildren(children);
+                const clean = cleanHeaderText(rawText);
+                return (
+                  <h3 id={slugify(clean)} className="article-h3" style={{ scrollMarginTop: "80px" }}>
+                    {children}
+                  </h3>
+                );
+              },
+              a: ({ href, children, ...rest }) => {
+                if (href && !href.startsWith("http") && !href.startsWith("#") && !href.startsWith("mailto:")) {
+                  // Limpiar ruta interna hacia /docs/...
+                  const cleanHref = href.replace(/\.md$/, "").replace(/^\.\//, "");
+                  const targetSlug = cleanHref.startsWith("/") ? cleanHref : `/docs/${normalizeSlug(cleanHref)}`;
+                  return (
+                    <Link to={targetSlug} {...rest}>
+                      {children}
+                    </Link>
+                  );
+                }
+                return (
+                  <a href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" {...rest}>
+                    {children}
+                  </a>
+                );
               },
               blockquote: ({ children }) => {
                 const text = getTextFromChildren(children);

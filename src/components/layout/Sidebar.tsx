@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { useState, useEffect, useMemo, type ReactNode } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { getDocsBySection } from "../../utils/loadDocs";
+import { motion, AnimatePresence } from "motion/react";
+import { getDocsBySection, normalizeSlug } from "../../utils/loadDocs";
 import { SECTION_ORDER, SECTION_LABELS, SPECIAL_SECTIONS } from "../../utils/sectionConfig";
 import {
   OverviewIcon,
@@ -13,6 +14,7 @@ import {
   UserAvatarIcon,
   CodeIcon,
   XIcon,
+  ChevronRightIcon,
 } from "../ui/Icons";
 import { useSidebar } from "../../context/SidebarContext";
 
@@ -27,16 +29,49 @@ const SECTION_ICONS: Record<string, ReactNode> = {
   Backend_Net: <BackendIcon />,
   Base_De_Datos: <BaseDeDatosIcon />,
   Frontend_React: <FrontendIcon />,
-  Bitacora: <BitacoraIcon />,
   Team: <TeamIcon />,
 };
 
 export function Sidebar() {
-  const bySection = getDocsBySection();
+  const bySection = useMemo(() => getDocsBySection(), []);
   const params = useParams();
-  const activeSlug = params["*"];
+  const rawActiveSlug = params["*"] || "";
+  const normActiveSlug = rawActiveSlug ? normalizeSlug(decodeURIComponent(rawActiveSlug)) : "";
   const location = useLocation();
   const { isSidebarOpen, closeSidebar } = useSidebar();
+
+  // Estado para carpetas desplegables
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  // Auto-expandir la carpeta que contiene el documento activo
+  useEffect(() => {
+    if (normActiveSlug) {
+      for (const section of SECTION_ORDER) {
+        const docs = bySection[section] || [];
+        if (
+          docs.some((d) => {
+            const docNorm = normalizeSlug(d.slug);
+            return (
+              docNorm === normActiveSlug ||
+              docNorm.endsWith(normActiveSlug) ||
+              normActiveSlug.endsWith(docNorm) ||
+              d.slug.toLowerCase() === rawActiveSlug.toLowerCase()
+            );
+          })
+        ) {
+          setOpenSections((prev) => ({ ...prev, [section]: true }));
+          break;
+        }
+      }
+    }
+  }, [normActiveSlug, rawActiveSlug, bySection]);
+
+  const toggleSection = (section: string) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
 
   return (
     <aside className={`sidebar ${isSidebarOpen ? 'sidebar-open' : ''}`}>
@@ -69,35 +104,55 @@ export function Sidebar() {
           }
 
           const docs = bySection[section] || [];
-          const isSectionActive = docs.some((d) => d.slug === activeSlug);
+          const isSectionActive = docs.some((d) => normalizeSlug(d.slug) === normActiveSlug);
+          const isOpen = !!openSections[section];
 
           return (
             <div key={section} className="sidebar-section">
-              <div className={`sidebar-section-header ${isSectionActive ? "active-group" : ""}`}>
+              <button
+                type="button"
+                className={`sidebar-section-header ${isSectionActive ? "active-group" : ""}`}
+                onClick={() => toggleSection(section)}
+                aria-expanded={isOpen}
+              >
                 <span className="sidebar-item-icon">{icon}</span>
                 <span className="sidebar-section-title">{label}</span>
-              </div>
+                <ChevronRightIcon className={`sidebar-chevron ${isOpen ? "open" : ""}`} />
+              </button>
 
-              {docs.length === 0 ? (
-                <p className="sidebar-empty">Sin documentos</p>
-              ) : (
-                <ul className="sidebar-list">
-                  {docs.map((doc) => {
-                    const isActive = doc.slug === activeSlug;
-                    return (
-                      <li key={doc.slug}>
-                        <Link
-                          to={`/docs/${doc.slug}`}
-                          className={`sidebar-subitem ${isActive ? "active" : ""}`}
-                          onClick={closeSidebar}
-                        >
-                          {doc.title}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: [0.34, 1.56, 0.64, 1] }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    {docs.length === 0 ? (
+                      <p className="sidebar-empty">Sin documentos</p>
+                    ) : (
+                      <ul className="sidebar-list">
+                        {docs.map((doc) => {
+                          const docNorm = normalizeSlug(doc.slug);
+                          const isActive = docNorm === normActiveSlug;
+                          return (
+                            <li key={doc.slug}>
+                              <Link
+                                to={`/docs/${doc.slug}`}
+                                className={`sidebar-subitem ${isActive ? "active" : ""}`}
+                                onClick={closeSidebar}
+                              >
+                                {doc.title}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           );
         })}

@@ -7,10 +7,39 @@ const modules = import.meta.glob("/src/docs/**/*.md", {
   eager: true,
 }) as Record<string, string>;
 
+export function normalizeSlug(str: string): string {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/[^a-z0-9\-\/]+/g, "")
+    .replace(/\-+/g, "-");
+}
+
+export function formatFallbackTitle(raw: string): string {
+  const lastPart = raw.split("/").pop() || "";
+  const clean = lastPart.replace(/^\d+[\-_]/, "");
+  return clean
+    .split(/[\-_]+/)
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 function pathToSlug(path: string): { section: string; slug: string } {
-  const parts = path.replace("/src/docs/", "").replace(".md", "").split("/");
-  const section = parts[0];
-  const slug = parts.join("/").toLowerCase();
+  const clean = path
+    .replace(/\\/g, "/")
+    .replace(/^.*\/src\/docs\//, "")
+    .replace(/^src\/docs\//, "")
+    .replace(/^\/src\/docs\//, "")
+    .replace(/\.md$/, "");
+  const parts = clean.split("/").filter(Boolean);
+  const section = parts[0] || "";
+  const slug = parts.map((p) => normalizeSlug(p)).join("/");
   return { section, slug };
 }
 
@@ -23,7 +52,11 @@ export const getTeamAvatar = (imageName: string): string => {
   }
 };
 
+let cachedDocs: DocFile[] | null = null;
+
 export function loadAllDocs(): DocFile[] {
+  if (cachedDocs) return cachedDocs;
+
   const docs: DocFile[] = Object.entries(modules).map(([path, raw]) => {
     const rawContent = raw as string;
     const { data, content } = parseFrontmatter(rawContent);
@@ -32,22 +65,23 @@ export function loadAllDocs(): DocFile[] {
     // Resolución de avatar de team usando new URL()
     let resolvedAvatar = "";
     if (data.avatar && typeof data.avatar === 'string') {
-      // Si el avatar es una ruta relativa como "../../assets/teams/...", resolverla
       if (data.avatar.includes("../assets/teams/")) {
         const fileName = data.avatar.split("/").pop() || "";
         resolvedAvatar = getTeamAvatar(fileName);
       } else if (data.avatar.startsWith("/teams/")) {
-        // Ruta absoluta como "/teams/AndresFelipeNavasAlvear.jpeg"
         resolvedAvatar = data.avatar;
       } else {
         resolvedAvatar = data.avatar;
       }
     }
 
+    const fallbackTitle = formatFallbackTitle(slug);
+    const title = String(data.title || data.name || fallbackTitle || "Sin título");
+
     return {
       slug,
       section,
-      title: String(data.title || data.name || slug.split("/").pop() || "Sin título"),
+      title,
       order: Number(data.order ?? 999),
       date: data.date ? String(data.date) : undefined,
       author: data.author ? String(data.author) : undefined,
@@ -61,7 +95,8 @@ export function loadAllDocs(): DocFile[] {
     } as DocFile;
   });
 
-  return docs.sort((a, b) => a.order - b.order);
+  cachedDocs = docs.sort((a, b) => a.order - b.order);
+  return cachedDocs;
 }
 
 export function getDocsBySection(): Record<string, DocFile[]> {
@@ -77,8 +112,32 @@ export function getDocsBySection(): Record<string, DocFile[]> {
 }
 
 export function getDocBySlug(slug: string): DocFile | undefined {
-  const norm = slug.toLowerCase();
-  return loadAllDocs().find(
-    (doc) => doc.slug.toLowerCase() === norm || doc.slug.endsWith("/" + norm)
-  );
+  if (!slug) return undefined;
+  const decoded = decodeURIComponent(slug);
+  const norm = normalizeSlug(decoded);
+  const allDocs = loadAllDocs();
+
+  // 1. Coincidencia exacta de slug normalizado
+  const exact = allDocs.find((doc) => normalizeSlug(doc.slug) === norm);
+  if (exact) return exact;
+
+  // 2. Coincidencia con delimitador de sección (/slug o slug/)
+  const suffix = allDocs.find((doc) => {
+    const docNorm = normalizeSlug(doc.slug);
+    return docNorm.endsWith("/" + norm) || norm.endsWith("/" + docNorm);
+  });
+  if (suffix) return suffix;
+
+  // 3. Coincidencia por nombre de archivo (basename)
+  const lastPartQuery = norm.split("/").pop();
+  if (lastPartQuery) {
+    const baseMatch = allDocs.find((doc) => {
+      const docNorm = normalizeSlug(doc.slug);
+      const lastPartDoc = docNorm.split("/").pop();
+      return lastPartDoc === lastPartQuery;
+    });
+    if (baseMatch) return baseMatch;
+  }
+
+  return undefined;
 }

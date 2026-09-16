@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { searchDocs } from "../../utils/search";
 import { SPECIAL_SECTIONS } from "../../utils/sectionConfig";
@@ -18,11 +19,17 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   useEffect(() => {
     if (isOpen) {
+      document.body.style.overflow = "hidden";
       setTimeout(() => {
         setQuery("");
         inputRef.current?.focus();
       }, 50);
+    } else {
+      document.body.style.overflow = "";
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -41,8 +48,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     onClose();
   }
 
-  return (
-    <div className="search-overlay" onClick={onClose}>
+  return createPortal(
+    <div className="search-overlay" onClick={onClose} role="dialog" aria-modal="true">
       <div className="search-modal" onClick={(e) => e.stopPropagation()}>
         <div className="search-modal-header">
           <SearchIcon className="search-modal-icon" />
@@ -50,7 +57,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             ref={inputRef}
             className="search-input"
             type="text"
-            placeholder="Search documentation, guides, and API..."
+            placeholder="Buscar guías, endpoints, roles, arquitectura..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -60,25 +67,40 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         <div className="search-results">
           {query.trim() === "" ? (
             <div className="search-empty-state">
-              <span className="search-category-label">RECOMENDADO</span>
+              <span className="search-category-label">ACCESOS RÁPIDOS SUGERIDOS</span>
               <div className="search-suggestions">
                 <button
                   className="search-suggestion-btn"
-                  onClick={() => goTo("Backend_Net", "backend_net/backend-arquitectura-base-infraestructura")}
+                  onClick={() => goTo("01_Arquitectura_y_Entorno", "01_arquitectura_y_entorno/01_vision_general_y_stack")}
                 >
-                  Arquitectura del Backend .NET
+                  📘 01. Visión General y Stack Tecnológico
                 </button>
                 <button
                   className="search-suggestion-btn"
-                  onClick={() => goTo("Agente_IA", "agente_ia/documentacion_tecnica")}
+                  onClick={() => goTo("02_Roles_y_Permisos", "02_roles_y_permisos/01_matriz_roles_y_permisos")}
                 >
-                  Documentación Técnica Agente IA
+                  🔐 02. Matriz Canónica de Roles y Credenciales
                 </button>
                 <button
                   className="search-suggestion-btn"
-                  onClick={() => goTo("Frontend_React", "frontend_react/arquitectura-y-guia-desarrollo")}
+                  onClick={() => goTo("03_Modulos_Frontend", "03_modulos_frontend/02_odontograma_fdi_interactivo")}
                 >
-                  Guía de Desarrollo Frontend React
+                  🦷 03. Odontograma FDI Interactivo (5 Superficies)
+                </button>
+                <button
+                  className="search-suggestion-btn"
+                  onClick={() => goTo("04_API_y_Servicios", "04_api_y_servicios/01_autenticacion_y_perfil_api")}
+                >
+                  ⚡ 04. API de Autenticación, Perfil y OAuth
+                </button>
+                <button
+                  className="search-suggestion-btn"
+                  onClick={() => {
+                    navigate("/bitacora");
+                    onClose();
+                  }}
+                >
+                  📅 05. Bitácoras de Desarrollo (18 Días Hábiles)
                 </button>
               </div>
             </div>
@@ -86,7 +108,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <p className="search-hint">Sin resultados para "{query}"</p>
           ) : (
             <div className="search-matches-group">
-              <span className="search-category-label">DOCUMENTATION MATCHES</span>
+              <span className="search-category-label">RESULTADOS ENCONTRADOS ({results.length})</span>
               {results.map((r) => (
                 <button
                   key={r.doc.slug}
@@ -106,14 +128,15 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
         <div className="search-modal-footer">
           <span className="search-footer-hint">
-            <kbd className="kbd-pill">↵</kbd> to select
+            <kbd className="kbd-pill">↵</kbd> Seleccionar
           </span>
           <span className="search-footer-hint">
-            <kbd className="kbd-pill">↑↓</kbd> to navigate
+            <kbd className="kbd-pill">ESC</kbd> Cerrar
           </span>
-          <span className="search-footer-engine">SEARCH ENGINE</span>
+          <span className="search-footer-engine">NEXUS SEARCH ENGINE</span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

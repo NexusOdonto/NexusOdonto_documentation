@@ -1,6 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/layout/Sidebar";
 import { TopBar } from "../components/layout/TopBar";
+import { WelcomeSplash } from "../components/ui/WelcomeSplash";
+import { ScrollProgress } from "../components/ui/ScrollProgress";
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { useEffect } from "react";
 
@@ -22,6 +24,8 @@ function DocsLayoutContent() {
 
   return (
     <div className="docs-layout">
+      <ScrollProgress />
+      <WelcomeSplash />
       <TopBar
         onMenuClick={toggleSidebar}
         showMenuButton={true}

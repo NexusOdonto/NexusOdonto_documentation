@@ -1,3 +1,12 @@
+---
+title: "Modelo de Datos Relacional y Principios 3FN"
+section: "Base_De_Datos"
+order: 5
+date: "2026-09-16"
+author: "Equipo NexusOdonto"
+summary: "Modelo de Datos Relacional y Principios 3FN — Documentación integral del ecosistema NexusOdonto."
+---
+
 # Documentación del modelo de datos — Sistema Odontológico
 
 ## 1. Propósito

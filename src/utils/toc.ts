@@ -9,9 +9,17 @@ export function slugify(text: string): string {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[`*_~[\]()]/g, "")
     .replace(/[^a-z0-9\s-]/g, "")
     .trim()
     .replace(/\s+/g, "-");
+}
+
+export function cleanHeaderText(text: string): string {
+  return text
+    .replace(/[`*_~]/g, "")
+    .replace(/\[(.*?)\]\(.*?\)/g, "$1")
+    .trim();
 }
 
 export function extractToc(markdown: string): TocItem[] {
@@ -23,9 +31,11 @@ export function extractToc(markdown: string): TocItem[] {
     const h3 = line.match(/^###\s+(.+)/);
 
     if (h2) {
-      items.push({ id: slugify(h2[1]), text: h2[1], level: 2 });
+      const clean = cleanHeaderText(h2[1]);
+      items.push({ id: slugify(clean), text: clean, level: 2 });
     } else if (h3) {
-      items.push({ id: slugify(h3[1]), text: h3[1], level: 3 });
+      const clean = cleanHeaderText(h3[1]);
+      items.push({ id: slugify(clean), text: clean, level: 3 });
     }
   }
 
