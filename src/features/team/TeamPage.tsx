@@ -15,11 +15,11 @@ export function TeamPage() {
     name: doc.name || doc.title,
     role: doc.role || "Team Member",
     summary: doc.summary || "Contribuidor de NexusOdonto.",
-    avatar: doc.avatar || doc.photo || "",
+    avatar: doc.avatar || doc.photo || (doc.name?.includes("Líder") ? "/lider.jpg" : ""),
     bio: doc.content || "",
   }));
 
-  const categories = ["All Roles", "Frontend", "Backend"];
+  const categories = ["All Roles", "Frontend", "Backend", "Apoyo Emocional"];
 
   const filteredMembers = teamMembers.filter((m) => {
     const matchesCat =
