@@ -24,11 +24,11 @@ NexusOdonto implementa un esquema de Control de Acceso Basado en Roles (RBAC) gr
 
 ---
 
-## 2. Credenciales Oficiales de Prueba (Semilla / Seeders)
+## 2. Credenciales de Prueba para Entornos Locales (Seeders de Desarrollo)
 
-Las siguientes cuentas vienen precargadas en el entorno de desarrollo y pruebas mediante `DatabaseInitializer`:
+> ⚠️ **AVISO DE SEGURIDAD:** Las siguientes credenciales corresponden exclusivamente a semillas de datos para **entornos locales de prueba (Local Development)**. En entornos de producción, todas las contraseñas son provistas por los propios usuarios o generadas de forma aleatoria y protegidas con hash BCrypt.
 
-| Rol / Tipo | Nombre Completo | Documento | Código Empleado | Correo Electrónico | Contraseña |
+| Rol / Tipo | Nombre Completo | Documento | Código Empleado | Correo Electrónico | Contraseña Demo |
 |---|---|---|---|---|---|
 | **ADMIN** | Carlos Administrator | `1234567890` | `AD001` | `admin@nexusodonto.com` | `Admin123!` |
 | **ODONTOLOGO** | Dra. Laura Gómez | `1098765432` | `OD001` | `odontologo@nexusodonto.com` | `Doctor123!` |
@@ -39,9 +39,9 @@ Las siguientes cuentas vienen precargadas en el entorno de desarrollo y pruebas 
 | **PACIENTE 2** | Camila López | `1076543211` | N/A | `camila.lopez@gmail.com` | `Paciente123!` |
 | **PACIENTE 3** | Felipe Torres | `1076543212` | N/A | `felipe.torres@hotmail.com` | `Paciente123!` |
 | **PACIENTE 4** | Valentina Mendoza | `1076543213` | N/A | `valentina.mendoza@yahoo.com` | `Paciente123!` |
-| **BOT SERVICE** | Chatbot Service | `BOT-SERVICE-01`| `BOT001` | `bot_service@nexusodonto.com` | `BotService2026!` (*) |
+| **BOT SERVICE** | Chatbot Service | `BOT-SERVICE-01`| `BOT001` | `bot_service@nexusodonto.com` | `<PROTEGIDO_POR_SECRET>` (*) |
 
-> **Nota (*):** La cuenta `bot_service@nexusodonto.com` solo es invocable programáticamente mediante el secret `X-Internal-Secret: nexus-internal-bot-secret-2026`. Intentar iniciar sesión desde la UI web arrojará error 403 Forbidden.
+> **Nota (*):** La cuenta `bot_service@nexusodonto.com` solo es invocable programáticamente mediante el secret configurado en la cabecera `X-Internal-Secret: <TU_BOT_INTERNAL_SECRET>`. Intentar iniciar sesión desde la UI web arrojará error 403 Forbidden.
 
 ---
 

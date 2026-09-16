@@ -13,9 +13,9 @@ Endpoints que intercomunican el Agente de Inteligencia Artificial en Python con 
 
 ## 1. Autenticación Interna de Servicios
 
-Todas las peticiones originadas desde el contenedor del Chatbot deben incluir el encabezado:
+Todas las peticiones originadas desde el contenedor del Chatbot deben incluir el encabezado configurado en las variables de entorno:
 ```http
-X-Internal-Secret: nexus-internal-bot-secret-2026
+X-Internal-Secret: <TU_BOT_INTERNAL_SECRET>
 ```
 
 ---

@@ -16,21 +16,21 @@ A continuación se detalla la configuración requerida para cada uno de los ento
 ```json
 {
   "ConnectionStrings": {
-    "OracleDb": "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XEPDB1)));User Id=NEXUS_USER;Password=YourSecurePassword123!;"
+    "OracleDb": "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XEPDB1)));User Id=NEXUS_USER;Password=<TU_CONTRASENA_ORACLE>;"
   },
   "JwtSettings": {
-    "Secret": "NexusOdonto_Super_Secret_Key_JWT_Production_2026_Minimum_256_Bits!",
+    "Secret": "<TU_SECRETO_JWT_MINIMO_256_BITS>",
     "Issuer": "NexusOdontoApi",
     "Audience": "NexusOdontoClient",
     "AccessTokenExpirationMinutes": 60,
     "RefreshTokenExpirationDays": 7
   },
   "Google": {
-    "ClientId": "your-google-client-id.apps.googleusercontent.com",
-    "ClientSecret": "GOCSPX-your-google-client-secret"
+    "ClientId": "<TU_GOOGLE_CLIENT_ID>.apps.googleusercontent.com",
+    "ClientSecret": "<TU_GOOGLE_CLIENT_SECRET>"
   },
   "InternalAuth": {
-    "BotSecret": "nexus-internal-bot-secret-2026"
+    "BotSecret": "<TU_BOT_INTERNAL_SECRET>"
   },
   "SeedSettings": {
     "RunMigrations": true,
@@ -61,7 +61,7 @@ A continuación se detalla la configuración requerida para cada uno de los ento
 VITE_API_URL=http://localhost:5000/api
 
 # Client ID de Google para inicio de sesión y vinculación OAuth
-VITE_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+VITE_GOOGLE_CLIENT_ID=<TU_GOOGLE_CLIENT_ID>.apps.googleusercontent.com
 
 # Nombre de la aplicación en el título del navegador
 VITE_APP_TITLE=NexusOdonto - Plataforma Clínica Odontológica
@@ -76,14 +76,14 @@ VITE_ENABLE_DEBUG_LOGS=false
 
 ```env
 # Credenciales del modelo Gemini
-GEMINI_API_KEY=AIzaSyYourGeminiApiKeyHere_2026
+GEMINI_API_KEY=<TU_GEMINI_API_KEY>
 
 # Conexión al Backend API de NexusOdonto
 NEXUS_API_BASE_URL=http://localhost:5000/api
-INTERNAL_BOT_SECRET=nexus-internal-bot-secret-2026
+INTERNAL_BOT_SECRET=<TU_BOT_INTERNAL_SECRET>
 
 # Base de datos de Caché Semántica
-SEMANTIC_CACHE_DB_URL=postgresql://pguser:pgpassword@localhost:5432/nexus_semantic_cache
+SEMANTIC_CACHE_DB_URL=postgresql://<PG_USER>:<PG_PASSWORD>@localhost:5432/nexus_semantic_cache
 
 # Configuración del Servidor FastAPI
 FASTAPI_HOST=0.0.0.0
