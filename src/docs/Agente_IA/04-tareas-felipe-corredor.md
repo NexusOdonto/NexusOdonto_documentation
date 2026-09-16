@@ -62,9 +62,9 @@ services:
     image: gvenzl/oracle-free:latest
     container_name: odontologia_oracle
     environment:
-      - ORACLE_PASSWORD=Admin123Password!
+      - ORACLE_PASSWORD=${ORACLE_PASSWORD:-<DEFINIR_PASSWORD>}
       - APP_USER=odontologia_user
-      - APP_PASSWORD=Odontologia123!
+      - APP_PASSWORD=${APP_PASSWORD:-<DEFINIR_PASSWORD>}
     ports:
       - "1521:1521"
     volumes:
@@ -92,7 +92,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - AUTHENTICATION_API_KEY=CLAVE_SECRETA_ODONTO_2026
+      - AUTHENTICATION_API_KEY=${AUTHENTICATION_API_KEY}
       - WEBHOOK_GLOBAL_ENABLED=true
       - WEBHOOK_GLOBAL_URL=http://agente-python:8000/webhook/whatsapp
       - WEBHOOK_EVENTS_MESSAGES_UPSERT=true
@@ -149,7 +149,7 @@ networks:
 La API de .NET utiliza autenticación con tokens JWT para el personal clínico. Al ser el Agente de Python un sistema automatizado, requiere un mecanismo de autenticación **Service-to-Service** seguro para consultar disponibilidad y agendar citas en nombre de los pacientes.
 
 ### Implementación en el Agente Python
-En el archivo [`app/clients/dotnet_client.py`](file:///c:/Users/ESSA3/Documents/NexusOdonto_ChatBot_AI/app/clients/dotnet_client.py), se configuró la inyección automática del encabezado de seguridad `X-Api-Key`:
+En el archivo `app/clients/dotnet_client.py`, se configuró la inyección automática del encabezado de seguridad `X-Api-Key`:
 
 ```python
 import os

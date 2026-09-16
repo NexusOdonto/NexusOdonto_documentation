@@ -24,7 +24,7 @@ services:
     ports:
       - "1521:1521"
     environment:
-      - ORACLE_PWD=YourSecurePassword123!
+      - ORACLE_PWD=${ORACLE_PWD}
       - ORACLE_CHARACTERSET=AL32UTF8
     volumes:
       - oracle_data:/opt/oracle/oradata
@@ -42,11 +42,11 @@ services:
     ports:
       - "5000:80"
     environment:
-      - ConnectionStrings__OracleDb=Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle-db)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=FREEPDB1)));User Id=NEXUS_USER;Password=YourSecurePassword123!;
-      - JwtSettings__Secret=NexusOdonto_Super_Secret_Key_JWT_Production_2026_Minimum_256_Bits!
+      - ConnectionStrings__OracleDb=Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle-db)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=FREEPDB1)));User Id=NEXUS_USER;Password=${ORACLE_PWD};
+      - JwtSettings__Secret=${JWT_SECRET}
       - SeedSettings__RunMigrations=true
       - SeedSettings__RunSeeds=true
-      - InternalAuth__BotSecret=nexus-internal-bot-secret-2026
+      - InternalAuth__BotSecret=${INTERNAL_BOT_SECRET}
     networks:
       - nexus-network
 
@@ -57,8 +57,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=pguser
-      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_USER=${POSTGRES_USER:-pguser}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=nexus_semantic_cache
     volumes:
       - pgvector_data:/var/lib/postgresql/data
@@ -79,8 +79,8 @@ services:
     environment:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - NEXUS_API_BASE_URL=http://backend-api:80/api
-      - INTERNAL_BOT_SECRET=nexus-internal-bot-secret-2026
-      - SEMANTIC_CACHE_DB_URL=postgresql://pguser:pgpassword@semantic-cache-db:5432/nexus_semantic_cache
+      - INTERNAL_BOT_SECRET=${INTERNAL_BOT_SECRET}
+      - SEMANTIC_CACHE_DB_URL=postgresql://${POSTGRES_USER:-pguser}:${POSTGRES_PASSWORD}@semantic-cache-db:5432/nexus_semantic_cache
     networks:
       - nexus-network
 

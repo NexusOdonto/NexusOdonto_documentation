@@ -63,6 +63,62 @@ El agente conversacional del consultorio odontológico debe interactuar en lengu
 
 ## 3. Análisis de Costos y Complejidad de Creación de Cuenta
 
+# Documento de Arquitectura y Especificación Técnica: Agente Conversacional con RAG para Sistema Odontológico
+
+**Proyecto:** Sistema Integral de Gestión para Consultorios Odontológicos  
+**Módulo:** Agente Conversacional Autónomo, Base de Conocimiento Vectorial (RAG) e Integraciones  
+**Sub-equipo:** Agente de IA y Automatización  
+**Stack de IA:** Python 3.11, FastAPI, LangGraph, LangChain, Qdrant, OpenAI Embeddings / LLMs, Evolution API  
+**Infraestructura:** Docker / Docker Compose, Backend .NET Core API, Oracle Database  
+
+- **Canal de Integración:** WhatsApp
+- **Tecnología Seleccionada:** Evolution API (v2.1.1) - Repositorio Oficial: <https://github.com/evolution-foundation/evolution-api.git>
+
+---
+
+## 1. Alcance y Arquitectura General del Sistema
+
+El agente conversacional resuelve la atención automatizada del consultorio odontológico mediante WhatsApp, operando bajo dos responsabilidades principales:
+
+1. **Atención Clínica e Institucional con RAG:** Responde consultas sobre el catálogo de servicios (profilaxis, ortodoncia, endodoncia, exodoncias, blanqueamiento, resinas), tarifas estimadas, preparación preoperatoria, cuidados posteriores y políticas del consultorio. Utiliza búsqueda semántica sobre una base de datos vectorial para garantizar respuestas fundamentadas y libres de alucinaciones.
+2. **Gestión Transaccional de Citas y Notificaciones:** Consulta disponibilidad de agenda en tiempo real, reserva, reprograma y cancela citas consumiendo la API REST en .NET Core (la cual interactúa con Oracle Database). Además, despacha recordatorios automáticos proactivos a los pacientes sin costo por mensaje.
+
+```text
+[ Paciente en WhatsApp ]
+           │ (Mensaje de texto)
+           ▼
+[ Contenedor: Evolution API ] (:8080)
+           │ HTTP POST (Webhook JSON)
+           ▼
+[ Contenedor: Agente FastAPI ] (:8000)
+           │
+           ├──► [ LangGraph Orquestador ] ◄── (Memoria por thread_id: Teléfono)
+           │           │
+           │           ├── (Consulta Clínica - RAG) ──► [ Contenedor: Qdrant ] (:6333)
+           │           │
+           │           └── (Cita / Agenda)          ──► [ Backend .NET Core API ] (:5000)
+           │                                                       │
+           │                                                       ▼
+           │                                              [ Oracle Database ]
+           │
+           │ HTTP POST (/message/sendText)
+           ▼
+[ Contenedor: Evolution API ]
+           │
+           ▼
+[ Paciente en WhatsApp ] (Respuesta Entregada)
+```
+
+---
+
+# Módulo 1: Integración con WhatsApp y Evolution API
+
+## 2. Contexto y Necesidad de Integración
+
+El agente conversacional del consultorio odontológico debe interactuar en lenguaje natural con los pacientes para entregar información clínica mediante RAG, consultar disponibilidad de profesionales, agendar citas en el backend .NET y enviar recordatorios de manera oportuna. Para vincular el entorno en Python con WhatsApp se analizaron las dos alternativas técnicas viables: la API oficial de Meta (WhatsApp Cloud API) y el canal de código abierto basada en contenedores (Evolution API).
+
+## 3. Análisis de Costos y Complejidad de Creación de Cuenta
+
 - **API Oficial de Meta (WhatsApp Cloud API):** Solución con costos variables y un proceso de registro demandante. Exige crear una cuenta en *Meta for Developers*, configurar una organización en *Meta Business Manager*, registrar una aplicación comercial y someterse a verificaciones. En su modo de pruebas gratuito (*Sandbox*), únicamente permite enviar y recibir mensajes con un máximo de 5 números telefónicos previamente verificados. En producción, cobra por cada plantilla de mensaje enviada fuera de la ventana de atención y exige asociar métodos de pago corporativos.
 - **Evolution API:** 100% gratuita y de código abierto. No requiere contratos, pagos por mensaje ni registros en portales de desarrolladores. Su vinculación se realiza desplegando el microservicio en Docker y escaneando un código QR desde la aplicación móvil de WhatsApp. Cualquier usuario o evaluador puede interactuar de inmediato desde su propio número sin trámites ni listas blancas previas.
 
@@ -114,7 +170,7 @@ docker run -d \
   --name evolution_whatsapp \
   -p 8080:8080 \
   -e SERVER_URL=http://localhost:8080 \
-  -e AUTHENTICATION_API_KEY=CLAVE_SECRETA_ODONTO_2026 \
+  -e AUTHENTICATION_API_KEY=${AUTHENTICATION_API_KEY:-<TU_EVOLUTION_API_KEY>} \
   -e DATABASE_ENABLED=false \
   -e WEBHOOK_GLOBAL_ENABLED=true \
   -e WEBHOOK_GLOBAL_URL=http://localhost:8000/webhook/whatsapp \
@@ -146,10 +202,10 @@ Una vez levantado el contenedor, se inicializa la sesión y se genera el código
 ```bash
 curl -X POST http://localhost:8080/instance/create \
   -H "Content-Type: application/json" \
-  -H "apikey: CLAVE_SECRETA_ODONTO_2026" \
+  -H "apikey: <TU_EVOLUTION_API_KEY>" \
   -d '{
     "instanceName": "clinica_odonto",
-    "token": "TOKEN_CLINICA_2026",
+    "token": "<TOKEN_INSTANCIA_CLINICA>",
     "qrcode": true,
     "integration": "WHATSAPP-BAILEYS"
   }'
@@ -159,7 +215,7 @@ curl -X POST http://localhost:8080/instance/create \
 
 ```bash
 curl -X GET http://localhost:8080/instance/connect/clinica_odonto \
-  -H "apikey: CLAVE_SECRETA_ODONTO_2026"
+  -H "apikey: <TU_EVOLUTION_API_KEY>"
 ```
 
 > **Nota:** Escanear el código QR resultante desde WhatsApp en el teléfono móvil (*Dispositivos vinculados > Vincular un dispositivo*).
@@ -169,7 +225,7 @@ curl -X GET http://localhost:8080/instance/connect/clinica_odonto \
 ```bash
 curl -X POST http://localhost:8080/message/sendText/clinica_odonto \
   -H "Content-Type: application/json" \
-  -H "apikey: CLAVE_SECRETA_ODONTO_2026" \
+  -H "apikey: <TU_EVOLUTION_API_KEY>" \
   -d '{
     "number": "573001234567",
     "text": "Hola, bienvenido al sistema odontológico. ¿En qué podemos ayudarte hoy?",
@@ -214,7 +270,7 @@ La interacción entre el agente y Qdrant opera en dos fases:
 FASE 1: INGESTA DOCUMENTAL (Offline / Admin)
 [ Documentos Clínicos (.pdf, .docx) ] 
        ──► [ Chunking Semántico + Metadatos ] 
-       ──► [ OpenAI Embeddings ] 
+       ──► [ Embeddings ] 
        ──► [ Qdrant Collection (:6333) ]
 
 FASE 2: INFERENCIA EN TIEMPO REAL (Online)
@@ -303,7 +359,7 @@ services:
       - "8080:8080"
     environment:
       - SERVER_URL=http://localhost:8080
-      - AUTHENTICATION_API_KEY=CLAVE_SECRETA_ODONTO_2026
+      - AUTHENTICATION_API_KEY=${AUTHENTICATION_API_KEY}
       - DATABASE_ENABLED=false
       - WEBHOOK_GLOBAL_ENABLED=true
       - WEBHOOK_GLOBAL_URL=http://agente_python:8000/webhook/whatsapp
@@ -337,13 +393,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - OPENAI_API_KEY=tu_openai_api_key
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
       - QDRANT_URL=http://qdrant:6333
       - EVOLUTION_API_URL=http://evolution-api:8080
-      - EVOLUTION_API_KEY=CLAVE_SECRETA_ODONTO_2026
+      - EVOLUTION_API_KEY=${AUTHENTICATION_API_KEY}
       - INSTANCE_NAME=clinica_odonto
       - DOTNET_API_URL=http://backend_dotnet:5000/api
-      - AGENT_INTERNAL_SECRET=TOKEN_SECRETO_INTERNO_NET
+      - AGENT_INTERNAL_SECRET=${AGENT_INTERNAL_SECRET}
     depends_on:
       - evolution-api
       - qdrant
