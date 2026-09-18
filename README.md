@@ -11,15 +11,20 @@
 [![Vite](https://img.shields.io/badge/Vite-8.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Motion](https://img.shields.io/badge/Motion-React-FF4081?logo=framer&logoColor=white)](https://motion.dev/)
 [![Markdown](https://img.shields.io/badge/Markdown-GFM-000000?logo=markdown&logoColor=white)](https://github.com/remarkjs/react-markdown)
+[![Deploy Netlify](https://img.shields.io/badge/Deploy-Netlify-00C7B7?logo=netlify&logoColor=white)](https://nexusdocumentacion.netlify.app/)
 [![Status](https://img.shields.io/badge/Status-Online_v2.0--stable-10B981)](#)
 
 </div>
 
 ---
 
+> 🌐 **Portal Desplegado en Producción (Netlify):** [https://nexusdocumentacion.netlify.app/](https://nexusdocumentacion.netlify.app/)
+
+---
+
 ## 📖 Descripción General
 
-**NexusOdonto Documentation** es el portal centralizado de referencia técnica, arquitectura de software, especificaciones de endpoints API, esquemas de bases de datos, guías de seguridad RBAC y bitácoras diarias de desarrollo del ecosistema clínico **NexusOdonto**.
+**NexusOdonto Documentation** es el portal centralizado de referencia técnica, arquitectura de software, especificaciones de endpoints API, esquemas de bases de datos, guías de seguridad RBAC y bitácoras diarias de desarrollo del ecosistema clínico **NexusOdonto**. Disponible en vivo en [nexusdocumentacion.netlify.app](https://nexusdocumentacion.netlify.app/).
 
 Construido como una Single Page Application (SPA) ultrarrápida, permite a desarrolladores, arquitectos y evaluadores explorar todo el conocimiento técnico del proyecto con una experiencia visual moderna, navegación por secciones dinámicas, renderizado en tiempo real de Markdown GFM y componentes interactivos de última generación.
 
