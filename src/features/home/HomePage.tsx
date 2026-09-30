@@ -33,7 +33,7 @@ export function HomePage() {
     },
     {
       title: "05. Bitácoras de Desarrollo (Dailies)",
-      description: "20 bitácoras cronológicas día a día (lunes a viernes) con registro detallado de commits y decisiones técnicas.",
+      description: "28 bitácoras cronológicas día a día (lunes a viernes) con registro detallado de commits y decisiones técnicas.",
       link: "/bitacora",
       badge: "Historial Activo",
       icon: <BitacoraIcon />,
