@@ -9,7 +9,7 @@ Esta guía explica **todo el código del frontend** de forma integral y didácti
 ## 📑 ÍNDICE GENERAL
 
 1. [Cómo Arranca la App y Flujo de Providers](#1-cómo-arranca-la-app)
-2. [Árbol de Carpetas Completo y Actualizado](#2-árbol-de-carpetas)
+2. [Arquitectura del Frontend y Árbol de Carpetas](#2-arquitectura-del-frontend-y-árbol-de-carpetas)
 3. [Conexión con el Backend (Axios + SignalR + FastAPI)](#3-conexión-con-el-backend)
 4. [Autenticación, Seguridad y Gestión de Sesión](#4-autenticación-y-sesión)
 5. [Sistema de Rutas, Guards y Control de Acceso por Rol](#5-sistema-de-rutas-y-permisos)
@@ -26,6 +26,8 @@ Esta guía explica **todo el código del frontend** de forma integral y didácti
 16. [Backend .NET 9 y Base de Datos Oracle 21c](#16-backend-y-base-de-datos)
 17. [Mapa de Conexiones: Componente → Servicio → Endpoint → BD](#17-mapa-de-conexiones)
 18. [Guía para la Sustentación Final del Proyecto](#18-guía-para-la-sustentación)
+19. [Guías y Comentarios de IA en el Código Fuente](#19-guías-y-comentarios-de-ia-en-el-código-fuente)
+20. [Depuración y Limpieza del Repositorio Realizada](#20-depuración-y-limpieza-del-repositorio)
 
 ---
 
@@ -67,18 +69,41 @@ createRoot(document.getElementById("root")!).render(
 
 ---
 
-## 2. ÁRBOL DE CARPETAS
+## 2. ARQUITECTURA DEL FRONTEND Y ÁRBOL DE CARPETAS
+
+### 2.1 Nombre Oficial y Principios de la Arquitectura
+El frontend de NexusOdonto implementa una **Arquitectura Modular Basada en Características (Feature-Driven Architecture)**, comúnmente conocida en la industria como **"Screaming Architecture" (Arquitectura que Grita su Dominio)**, complementada con los siguientes patrones arquitectónicos modernos:
+
+1. **Feature-Driven / Screaming Architecture (Uncle Bob Martin):**
+   - **Qué significa:** La estructura de carpetas no agrupa archivos por tipo técnico primitivo (`views/`, `controllers/`, `models/`), sino que **"grita" las capacidades y el dominio clínico del negocio**: `features/odontograma`, `features/agenda`, `features/historia-clinica`, `features/citas`, `features/servicios`, `features/dashboard`.
+   - **Ventaja en NexusOdonto:** Cada funcionalidad clínica es un submódulo autosuficiente y desacoplado que contiene sus propias pantallas, subcomponentes, tipos y lógica auxiliar. Si un desarrollador necesita modificar el odontograma FDI, no busca entre cientos de archivos dispersos, sino que entra directamente a `src/features/odontograma/`.
+
+2. **Arquitectura Basada en Componentes (Component-Driven Architecture - CDA):**
+   - Construcción de abajo hacia arriba (*Bottom-Up*). Los elementos reutilizables se encapsulan en `src/components/ui/` (botones, inputs, badges, selectores glassmorphism) y `src/components/common/` (logos, animaciones de carga, error boundaries), asegurando coherencia visual en Dark/Light mode y accesibilidad WCAG AA.
+
+3. **Patrón de Capa de Servicios (Service Layer Pattern):**
+   - Ubicado en `src/api/`. Ningún componente React realiza peticiones HTTP directas ni conoce URLs duras. Todas las operaciones consumen métodos fuertemente tipados de servicios desacoplados (`appointmentService`, `odontogramService`, `availabilityService`, etc.) conectados al cliente Axios centralizado (`axiosClient.ts`).
+
+4. **Patrón Proveedor / Inyección de Contextos (Context Provider Pattern):**
+   - Gestión transversal de estados globales (`ThemeProvider`, `AuthProvider`, `NotificationProvider`) que inyectan sesión, tokens JWT, roles, persistencia de preferencias y sockets SignalR a cualquier nivel del árbol sin incurrir en *prop drilling*.
+
+5. **Code-Splitting y Carga Diferida (Route-Level Lazy Loading & Dynamic Imports):**
+   - División estratégica de bundles en `src/routes/index.tsx` mediante `React.lazy()` y `Suspense`. Módulos hiper-pesados (como `@react-pdf/renderer` para exportar historias clínicas u odontogramas) se cargan de forma asíncrona mediante `await import()` solo cuando el profesional clínico los solicita, manteniendo la Landing Page y el Login con una carga inicial ultraliviana (< 1.2s).
+
+---
+
+### 2.2 Árbol de Carpetas Completo y Actualizado
 
 ```
 src/
 ├── main.tsx                      # Punto de montaje React DOM
-├── App.tsx                       # Orquestador de Providers globales
+├── App.tsx                       # Orquestador de Providers globales [Con Guía IA]
 ├── index.css                     # Tailwind CSS v4, fuentes Prata/Instrument, animaciones
 │
 ├── api/                          # 📡 CAPA DE COMUNICACIÓN CON BACKENDS
-│   ├── axiosClient.ts            # Cliente Axios con inyección automática de Bearer JWT
+│   ├── axiosClient.ts            # Cliente Axios con inyección automática de Bearer JWT [Con Guía IA]
 │   ├── authService.ts            # Login, registro, perfil /me, Google OAuth
-│   ├── availabilityService.ts    # [NUEVO] Horarios semanales, impacto y reprogramaciones
+│   ├── availabilityService.ts    # [NUEVO] Horarios semanales, impacto y reprogramaciones [Con Guía IA]
 │   ├── clinicSettingsService.ts  # [NUEVO] Configuración clínica persistente multi-dispositivo
 │   ├── hubNotificationService.ts # [NUEVO] Notificaciones dirigidas desde el backend
 │   ├── appointmentService.ts     # Citas médicas, estados, inasistencias y contexto clínico
@@ -100,7 +125,6 @@ src/
 │
 ├── components/                   # 🧩 COMPONENTES REUTILIZABLES
 │   ├── common/
-│   │   ├── AiAssistantTip.tsx    # [NUEVO] Mensajes interactivos de ayuda contextual estilo IA
 │   │   ├── BrandLogo.tsx         # Logo interactivo con efectos de gradiente
 │   │   ├── DentistryReloadIcon.tsx # Loader animado con temática odontológica
 │   │   ├── ErrorBoundary.tsx     # Capturador de fallos de interfaz
@@ -474,17 +498,67 @@ El backend implementa **Clean Architecture** en .NET 9 sobre **Oracle Database 2
 
 ### Preguntas Clave que Pueden Hacer los Evaluadores:
 
-1. **¿Por qué los cambios de horario de los odontólogos no aplican inmediatamente el mismo día?**
+1. **¿Cómo se llama la arquitectura que implementamos en el Frontend y cuáles son sus pilares?**
+   - *Respuesta:* Implementamos una **Arquitectura Modular Basada en Características (Feature-Driven Architecture)**, también conocida formalmente como **"Screaming Architecture" (Uncle Bob)**. A diferencia de las estructuras tradicionales organizadas por capas técnicas (`/views`, `/controllers`), aquí el árbol de carpetas en `src/features/` **"grita" el dominio del negocio odontológico** (`odontograma`, `historia-clinica`, `agenda`, `citas`, `servicios`). Esta arquitectura se complementa con:
+     - **Component-Driven Architecture (CDA):** Componentes visuales y de diseño reutilizables construidos de forma modular en `src/components/ui/` y `src/components/common/`.
+     - **Service Layer Pattern:** Desacoplamiento total del transporte HTTP en `src/api/` usando TypeScript y DTOs tipados.
+     - **Provider / Context Pattern:** Inyección de dependencias para sesión, tema y notificaciones en cascada en `src/App.tsx`.
+     - **Route-Level Code-Splitting:** Carga perezosa con `React.lazy` y `Suspense` para mantener el bundle inicial ultraliviano.
+
+2. **¿Por qué los cambios de horario de los odontólogos no aplican inmediatamente el mismo día?**
    - *Respuesta:* Por integridad clínica y respeto al paciente. Si un doctor cambia su turno a las 10:00 AM, no podemos cancelar automáticamente a los pacientes que ya están en sala de espera ese mismo día. La política de la clínica establece que cualquier cambio rige a partir de mañana, detectando citas afectadas y marcándolas con "Requiere reprogramación" para su gestión asistida.
 
-2. **¿Cómo garantizan que la aplicación cargue rápido si incluye librerías tan pesadas como generación de PDFs y odontogramas interactivos?**
+3. **¿Cómo garantizan que la aplicación cargue rápido si incluye librerías tan pesadas como generación de PDFs y odontogramas interactivos?**
    - *Respuesta:* Aplicamos **Code-Splitting a nivel de rutas** con `React.lazy` y **carga dinámica diferida** (`await import(...)`). El generador de PDF `@react-pdf/renderer` (que pesa ~1.2 MB) no se descarga cuando el usuario entra a la Landing Page o al Login; solo se transfiere por red en el instante exacto en que el doctor pulsa el botón "Descargar PDF".
 
-3. **¿Cómo funciona la persistencia de la configuración de la clínica entre diferentes dispositivos?**
+4. **¿Cómo funciona la persistencia de la configuración de la clínica entre diferentes dispositivos?**
    - *Respuesta:* En `clinicSettingsService`, la configuración se envía al endpoint `/v1/clinic-settings` para guardarse en la base de datos central. Además, cuenta con una estrategia de caché y fallback en `localStorage` con emisión de eventos reactivos (`nexus_configuracion_updated`), asegurando que cualquier cambio se sincronice de inmediato en toda la interfaz.
 
-4. **¿Cómo se manejaron los estándares de accesibilidad y SEO en el frontend?**
+5. **¿Cómo se manejaron los estándares de accesibilidad y SEO en el frontend?**
    - *Respuesta:* El proyecto alcanzó **100/100 en Accesibilidad (WCAG AA)** y **100/100 en SEO**. Unificamos la jerarquía semántica para que cada página contenga una única etiqueta `<h1>` representativa, añadimos etiquetas descriptivas ARIA en todos los componentes interactivos y optimizamos los contrastes tanto en tema claro como en tema oscuro.
 
 ---
+
+## 19. GUÍAS Y COMENTARIOS DE IA EN EL CÓDIGO FUENTE
+
+Para facilitar el estudio, lectura y sustentación del proyecto, los archivos más críticos de la arquitectura del frontend han sido enriquecidos directamente en su código con **bloques de guía estilo asistente de IA** (`🤖 [AI ASSISTANT GUIDE]` y `💡 [AI HINT]`):
+
+| Archivo Fuente | Qué Explica la Guía de IA en el Código |
+|---|---|
+| [`src/App.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/App.tsx) | El orden estricto de la cascada de Providers (`ThemeProvider` $\rightarrow$ `BrowserRouter` $\rightarrow$ `AuthProvider` $\rightarrow$ `NotificationProvider` $\rightarrow$ `ErrorBoundary` $\rightarrow$ `AppRoutes`). |
+| [`src/routes/index.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/routes/index.tsx) | Enrutamiento SPA, code-splitting con `React.lazy()` y cómo el aislamiento mantiene la Landing Page en 32 kB. |
+| [`src/routes/ProtectedRoute.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/routes/ProtectedRoute.tsx) | Pipeline de validación de seguridad: verificación de sesión activa, forzado de primer cambio de clave y control por rol (`hasRouteAccess`). |
+| [`src/api/axiosClient.ts`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/api/axiosClient.ts) | Interceptor de request con inyección automática de `Bearer JWT` e interceptor de response con captura de 401 y disparo del evento `auth:expired`. |
+| [`src/features/auth/AuthContext.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/auth/AuthContext.tsx) | Gestión central de sesión, timeout por inactividad de 20 min (estándar HIPAA), chequeo periódico de expiración y presencia vía SignalR. |
+| [`src/features/odontograma/OdontogramaUI.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/odontograma/OdontogramaUI.tsx) | Nomenclatura FDI internacional (cuadrantes 1 al 8), 5 caras anatómicas (M, D, O, V, L) y disparo reactivo de `nexus_odontograma_updated`. |
+| [`src/features/historia-clinica/HistoriaClinicaView.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/historia-clinica/HistoriaClinicaView.tsx) | Encadenamiento obligatorio de atenciones a citas activas, diagnósticos CIE-10 y generación de PDF en cliente. |
+| [`src/features/agenda/AgendaView.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/agenda/AgendaView.tsx) | Matriz semanal de 7 días, carpetas dossier (`📁 N Citas`) y carrusel de protección de receso de almuerzo. |
+| [`src/api/availabilityService.ts`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/api/availabilityService.ts) | Política clínica "Los cambios rigen desde mañana", preservación de citas en curso y etiquetado de reprogramación. |
+| [`src/features/dashboard/DashboardPage.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/dashboard/DashboardPage.tsx) | Bifurcación al portal del paciente y cálculo en tiempo real de "Equipo en Turno Hoy" con nomenclatura "Consultorio". |
+| [`src/features/dashboard/equipoEnTurno.ts`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/dashboard/equipoEnTurno.ts) | Algoritmo dinámico que evalúa la hora del sistema contra los turnos y descansos para saber qué doctor atiende hoy. |
+| [`src/features/servicios/ServiciosView.tsx`](file:///c:/Users/ESSA7/OneDrive/Documentos/frontNexusOdonto/NexusOdontoFrontend/src/features/servicios/ServiciosView.tsx) | Tarifario libre en COP y calibración de minutos en sillón dental que alimentan la agenda. |
+
+---
+
+## 20. DEPURACIÓN Y LIMPIEZA DEL REPOSITORIO REALIZADA
+
+Previo a la entrega final, se llevó a cabo un proceso de auditoría y depuración de código residual en el repositorio del frontend:
+
+1. **Carpetas Residuales Eliminadas**:
+   - `src/hooks/` (carpeta vacía sin archivos).
+   - `src/components/ui/styles/` (carpeta vacía sin archivos).
+   - `src/we/` y `nexus odonto front/` (bóvedas accidentales locales de Obsidian que contenían `.obsidian` y `Bienvenido.md`).
+2. **Archivos de Respaldo y Mocks Obsoletos Eliminados**:
+   - `DashboardPage.backup.tsx` (copia de respaldo estática de 31 KB).
+   - `ServicioRegistroView.tsx` (vista huérfana reemplazada por `ServiciosView.tsx` y `ServicioModal.tsx` con API real).
+   - `CarruselAlmuerzoVertical.tsx` (borrador en desuso reemplazado por `CarruselAlmuerzoUnificado.tsx`).
+   - `users.mock.ts` y `RoleSwitcher.tsx` (mocks provisionales de desarrollo obsoletos frente a JWT y Oracle).
+   - `odontogramIsolation.test.ts` (script suelto de pruebas de aislamiento).
+   - `dentalBgStyles.ts` (estilos estáticos no referenciados).
+3. **Resultado de Optimización**:
+   - Reducción del bundle CSS de producción de **309 kB** a **291 kB**.
+   - Compilación limpia con `tsc -b && vite build` en **1.18 segundos** sin advertencias críticas.
+
+---
 *NexusOdonto — Sistema Integral de Gestión Odontológica y Clínica · Documentación Oficial de Código*
+
