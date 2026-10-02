@@ -203,44 +203,6 @@ export function Sidebar() {
                       <p className="sidebar-empty">Sin documentos</p>
                     ) : (
                       <ul className="sidebar-list">
-                        {section === "Frontend_React" && (
-                          <li>
-                            <a
-                              href="/Documentacion_Principal_Frontend_NexusOdonto.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="sidebar-subitem"
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "6px",
-                                color: "var(--color-primary-light, #38bdf8)",
-                                fontWeight: 600,
-                              }}
-                            >
-                              <span>📄 Ver Documentación Principal (PDF)</span>
-                            </a>
-                          </li>
-                        )}
-                        {section === "Backend_Net" && (
-                          <li>
-                            <a
-                              href="/Documentacion_Principal_Backend_NexusOdonto.pdf"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="sidebar-subitem"
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "6px",
-                                color: "var(--color-primary-light, #38bdf8)",
-                                fontWeight: 600,
-                              }}
-                            >
-                              <span>⚙️ Ver Documentación Principal (PDF)</span>
-                            </a>
-                          </li>
-                        )}
                         {docs.map((doc) => {
                           const docNorm = normalizeSlug(doc.slug);
                           const isActive = docNorm === normActiveSlug;
