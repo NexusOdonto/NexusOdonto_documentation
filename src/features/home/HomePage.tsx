@@ -64,13 +64,27 @@ export function HomePage() {
             <span>Ver Bitácora Diaria</span>
           </Link>
 
-          <Link to="/docs/frontend_react/00_documentacion_principal_frontend_pdf" className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+          <a
+            href="/Documentacion_Principal_Frontend_NexusOdonto.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            download="Documentacion_Principal_Frontend_NexusOdonto.pdf"
+            className="btn-secondary"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          >
             <span>📄 PDF Frontend</span>
-          </Link>
+          </a>
 
-          <Link to="/docs/backend_net/00_documentacion_principal_backend_pdf" className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+          <a
+            href="/Documentacion_Principal_Backend_NexusOdonto.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            download="Documentacion_Principal_Backend_NexusOdonto.pdf"
+            className="btn-secondary"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          >
             <span>⚙️ PDF Backend</span>
-          </Link>
+          </a>
 
           <a
             href="https://github.com/NexusOdonto"
