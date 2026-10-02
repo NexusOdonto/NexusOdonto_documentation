@@ -209,7 +209,6 @@ export function Sidebar() {
                               href="/Documentacion_Principal_Frontend_NexusOdonto.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              download="Documentacion_Principal_Frontend_NexusOdonto.pdf"
                               className="sidebar-subitem"
                               style={{
                                 display: "flex",
@@ -219,7 +218,7 @@ export function Sidebar() {
                                 fontWeight: 600,
                               }}
                             >
-                              <span>📥 Documentación Principal (PDF)</span>
+                              <span>📄 Ver Documentación Principal (PDF)</span>
                             </a>
                           </li>
                         )}
@@ -229,7 +228,6 @@ export function Sidebar() {
                               href="/Documentacion_Principal_Backend_NexusOdonto.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              download="Documentacion_Principal_Backend_NexusOdonto.pdf"
                               className="sidebar-subitem"
                               style={{
                                 display: "flex",
@@ -239,7 +237,7 @@ export function Sidebar() {
                                 fontWeight: 600,
                               }}
                             >
-                              <span>📥 Documentación Principal (PDF)</span>
+                              <span>⚙️ Ver Documentación Principal (PDF)</span>
                             </a>
                           </li>
                         )}

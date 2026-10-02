@@ -36,24 +36,45 @@ export function ArticlePage() {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [rawSlug]);
 
-  // Si la ruta solicitada corresponde a un archivo PDF estático, redirigir a la URL nativa
-  useEffect(() => {
-    if (rawSlug && rawSlug.toLowerCase().endsWith(".pdf")) {
-      const target = rawSlug.startsWith("/") ? rawSlug : `/${rawSlug}`;
-      window.location.href = target;
-    }
-  }, [rawSlug]);
-
   if (!doc) {
     if (rawSlug && rawSlug.toLowerCase().endsWith(".pdf")) {
-      const target = rawSlug.startsWith("/") ? rawSlug : `/${rawSlug}`;
+      const fileName = rawSlug.split("/").pop() || "documento.pdf";
+      const target = `/${fileName}`;
       return (
-        <div className="article-not-found">
-          <h2>Descargando documento...</h2>
-          <p>Se está iniciando la descarga del archivo.</p>
-          <a href={target} download className="btn-primary" style={{ display: "inline-flex", marginTop: "16px" }}>
-            📥 Si la descarga no inicia automáticamente, haz clic aquí
-          </a>
+        <div className="pdf-viewer-page" style={{ width: "100%", padding: "16px 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
+            <h2 style={{ margin: 0, fontSize: "1.3rem" }}>{fileName}</h2>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <a
+                href={target}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+                style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+              >
+                <span>↗ Abrir en pestaña nueva</span>
+              </a>
+              <a
+                href={target}
+                download={fileName}
+                className="btn-secondary"
+                style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+              >
+                <span>📥 Descargar copia</span>
+              </a>
+            </div>
+          </div>
+          <iframe
+            src={target}
+            title={fileName}
+            style={{
+              width: "100%",
+              height: "82vh",
+              border: "1px solid var(--color-border, #334155)",
+              borderRadius: "12px",
+              backgroundColor: "#1e293b",
+            }}
+          />
         </div>
       );
     }
@@ -129,7 +150,6 @@ export function ArticlePage() {
                   return (
                     <a
                       href={href}
-                      download={href?.toLowerCase().endsWith(".pdf") ? true : undefined}
                       target="_blank"
                       rel="noopener noreferrer"
                       {...rest}

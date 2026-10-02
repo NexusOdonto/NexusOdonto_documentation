@@ -68,22 +68,20 @@ export function HomePage() {
             href="/Documentacion_Principal_Frontend_NexusOdonto.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            download="Documentacion_Principal_Frontend_NexusOdonto.pdf"
             className="btn-secondary"
             style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
           >
-            <span>📄 PDF Frontend</span>
+            <span>📄 Ver PDF Frontend</span>
           </a>
 
           <a
             href="/Documentacion_Principal_Backend_NexusOdonto.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            download="Documentacion_Principal_Backend_NexusOdonto.pdf"
             className="btn-secondary"
             style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
           >
-            <span>⚙️ PDF Backend</span>
+            <span>⚙️ Ver PDF Backend</span>
           </a>
 
           <a
